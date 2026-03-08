@@ -1,7 +1,11 @@
 from datasets import DownloadManager
 from transformers import AutoConfig, AutoModel
 from transformers import AutoTokenizer, PretrainedConfig
-from transformers.utils.hub import is_remote_url
+from urllib.parse import urlparse
+
+def is_remote_url(url):
+    parsed = urlparse(url)
+    return parsed.scheme in ("http", "https")
 
 from .configuration_detikzify import *
 from .modeling_detikzify import *

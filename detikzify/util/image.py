@@ -6,7 +6,11 @@ from os.path import isfile
 from PIL import Image, ImageChops, ImageOps
 import pymupdf
 import requests
-from transformers.utils.hub import is_remote_url
+from urllib.parse import urlparse
+
+def is_remote_url(url):
+    parsed = urlparse(url)
+    return parsed.scheme in ("http", "https")
 
 DUMMY_IMAGE = Image.new("RGB", (24, 24), color="white")
 
