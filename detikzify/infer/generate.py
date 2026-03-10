@@ -90,31 +90,31 @@ class Qwen3VLVerifier:
 
     DRAWING_PROMPT = """You are a TikZ code verifier. Given a target image and a partial TikZ program, assess how well the drawing commands so far are progressing toward reproducing the target image.
 
-Focus on:
-- Are the shapes, positions, and relationships between elements consistent with the target?
-- Does the overall structure match what's visible in the image?
-- Are colors, line styles, and proportions reasonable?
+    Focus on:
+    - Are the shapes, positions, and relationships between elements consistent with the target?
+    - Does the overall structure match what's visible in the image?
+    - Are colors, line styles, and proportions reasonable?
 
-Partial TikZ Code:
-```latex
-{code}
-```
+    Partial TikZ Code:
+    ```latex
+    {code}
+    ```
 
-Rate the overall progress toward reproducing the target image.
-Respond with ONLY a decimal number from 0.0 to 1.0, nothing else.
+    Rate the overall progress toward reproducing the target image.
+    Respond with ONLY a single decimal number from 0.0 to 1.0. Do not include any other text, explanation, or context.
 
-Score:"""
+    Score:"""
 
     STRUCTURAL_PROMPT = """You are a TikZ code verifier. Given a target image and a partial TikZ program that is still in the preamble/setup phase, assess whether the document setup is reasonable for reproducing the target image.
 
-Partial TikZ Code:
-```latex
-{code}
-```
+    Partial TikZ Code:
+    ```latex
+    {code}
+    ```
 
-Is this setup reasonable? Respond with ONLY a decimal number from 0.0 to 1.0, nothing else.
+    Is this setup reasonable? Respond with ONLY a single decimal number from 0.0 to 1.0. Do not include any other text, explanation, or context.
 
-Score:"""
+    Score:"""
 
     BOILERPLATE_PATTERNS = [
         r"^\s*\\documentclass",
@@ -318,7 +318,7 @@ Score:"""
     @staticmethod
     def _parse_score(response: str) -> float:
         """Extract a numerical score from the verifier's response."""
-        clean = response.strip().split("\n")[0].strip()
+        clean = response.strip()
 
         patterns = [
             r"^(\d+\.\d+)",  # starts with decimal like 0.75
@@ -346,7 +346,7 @@ Score:"""
                 return max(0.0, min(1.0, val))
 
         logger.warning(
-            f'[Verifier] Could not parse score from: "{clean}", defaulting to 0.5'
+            f'[Verifier] Could not parse score from: "{clean[:100]}", defaulting to 0.5'
         )
         return 0.5
 
@@ -361,7 +361,7 @@ class DetikzifyGenerator:
     2. Boilerplate lines (preamble, \\usepackage, etc.) get a neutral pass-through score.
     3. Drawing commands are scored by the Qwen3-VL verifier against the target image.
     4. The top-B candidates (beam width) are retained.
-    5. Search terminates when \\end{tikzpicture} is generated or max depth reached.
+    5. Search terminates when \\end{document} is generated or max depth reached.
     """
 
     def __init__(
@@ -515,6 +515,8 @@ class DetikzifyGenerator:
         Perform one round of Verified Beam Search.
         """
         search_start = time()
+        tokenizer = unwrap(self.processor).tokenizer
+        eos_token_id = tokenizer.eos_token_id
 
         beams: List[BeamCandidate] = [
             BeamCandidate(
@@ -571,7 +573,12 @@ class DetikzifyGenerator:
                 for cand_idx, (candidate_line, candidate_token_ids) in enumerate(candidates):
                     partial_lines = beam.lines + [candidate_line]
                     is_boilerplate = self.verifier._is_boilerplate(candidate_line)
-                    is_finished = "\\end{tikzpicture}" in candidate_line
+                    
+                    is_finished = (
+                        "\\end{document}" in candidate_line or 
+                        (candidate_token_ids.numel() > 0 and candidate_token_ids[-1].item() == eos_token_id) or
+                        candidate_line.strip() == "```"
+                    )
                     
                     new_candidates_info.append({
                         "beam": beam,
@@ -766,7 +773,12 @@ class DetikzifyGenerator:
             line_tokens_list = []
             candidate_line = ""
             for i in range(new_tokens.numel()):
-                line_tokens_list.append(new_tokens[i].item())
+                token_id = new_tokens[i].item()
+                line_tokens_list.append(token_id)
+                if token_id == eos_token_id:
+                    candidate_line = tokenizer.decode(line_tokens_list, skip_special_tokens=True)
+                    break
+                
                 text_so_far = tokenizer.decode(line_tokens_list, skip_special_tokens=True)
                 if "\n" in text_so_far:
                     candidate_line = text_so_far.split("\n", 1)[0]
@@ -774,7 +786,7 @@ class DetikzifyGenerator:
             else:
                 candidate_line = tokenizer.decode(line_tokens_list, skip_special_tokens=True)
 
-            if not candidate_line.strip():
+            if not candidate_line.strip() and not (line_tokens_list and line_tokens_list[-1] == eos_token_id):
                 continue
 
             if candidate_line in seen_lines:

@@ -21,7 +21,6 @@ from transformers.utils import is_flash_attn_2_available
 
 from detikzify.evaluate import (
     ClipScore,
-    CrystalBLEU,
     DreamSim,
     ImageSim,
     KernelInceptionDistance,
@@ -40,11 +39,6 @@ def parse_args():
     argument_parser.add_argument(
         "--cache_dir",
         help="directory where model outputs should be saved to",
-    )
-    argument_parser.add_argument(
-        "--trainset",
-        default="nllg/datikz-v3",
-        help="path or name of the DaTikZ train set",
     )
     argument_parser.add_argument(
         "--testset",
@@ -109,7 +103,7 @@ def predict(model_name, base_model, testset, model_inputs="image", adapter_model
     predictions, worker_preds = list(), list()
     model, processor = load_model(
         model_name_or_path=base_model,
-        device_map=RANK,
+        device_map="auto",  # instead of device_map=RANK
         torch_dtype=bfloat16 if is_cuda_available() and is_bf16_supported() else float16,
         attn_implementation="flash_attention_2" if is_flash_attn_2_available() else None,
     )
@@ -136,8 +130,7 @@ def predict(model_name, base_model, testset, model_inputs="image", adapter_model
                 dump(predictions, f)
     return predictions
 
-def load_metrics(trainset, measure_throughput=False, **kwargs):
-    bleu = CrystalBLEU(corpus=trainset, **kwargs)
+def load_metrics(measure_throughput=False, **kwargs):
     eed = TexEditDistance(**kwargs)
     clip = ClipScore(**kwargs)
     imgsim = ImageSim(**kwargs)
@@ -165,7 +158,6 @@ def load_metrics(trainset, measure_throughput=False, **kwargs):
             scores = {"MeanTokenEfficiency": mean_token_efficiency(predictions=predictions)}
 
         redacted_metrics, standard_metrics = {}, {
-            bleu: partial(bleu.update, list_of_references=ref_code, hypotheses=pred_code),
             eed: partial(eed.update, target=ref_code, preds=pred_code),
             clip: partial(clip.update, text=captions, images=pred_image),
             imgsim: lambda: [imgsim.update(img1=img1, img2=img2) for img1, img2 in zip(ref_image, pred_image)],
@@ -199,7 +191,6 @@ if __name__ == "__main__":
     dist.init_process_group(timeout=timedelta(days=3))
     args = parse_args()
 
-    trainset = load_dataset(args.trainset, split="train")
     testset = load_dataset("parquet", data_files={"test": args.testset}, split="test").sort("caption") # type: ignore
 
     predictions = defaultdict(list)
@@ -221,7 +212,7 @@ if __name__ == "__main__":
 
     if RANK == 0: # Scoring only on main process
         scores = dict()
-        metrics = load_metrics(trainset['code'], measure_throughput=args.timeout is not None, sync_on_compute=False) # type: ignore
+        metrics = load_metrics(measure_throughput=args.timeout is not None, sync_on_compute=False) # type: ignore
         for model_name, prediction in tqdm(predictions.items(), desc="Computing metrics", total=len(predictions)):
             scores[model_name] = metrics(
                 references=testset,
