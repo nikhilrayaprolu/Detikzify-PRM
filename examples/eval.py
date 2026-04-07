@@ -26,7 +26,7 @@ from detikzify.evaluate import (
     KernelInceptionDistance,
     TexEditDistance,
 )
-from detikzify.infer import DetikzifyPipeline, TikzDocument
+from detikzify.infer import TikzDocument
 from detikzify.model import adapter, load as load_model
 
 WORLD_SIZE = int(getenv("WORLD_SIZE", 1))
@@ -81,6 +81,11 @@ def parse_args():
         help="path to the LoRA-finetuned verifier checkpoint (required if verifier_type is 'finetuned')",
     )
     argument_parser.add_argument(
+        "--mcts",
+        action="store_true",
+        help="use MCTS (old_generate.py) instead of Verified Beam Search",
+    )
+    argument_parser.add_argument(
         "--debug",
         action="store_true",
         help="only produce predictions for 2 samples and then run metrics",
@@ -116,7 +121,7 @@ def generate(pipe, item, model_inputs, strict=False, timeout=None, **tqdm_kwargs
             break
     return [tikzpic for _, tikzpic in sorted(tikzpics, key=itemgetter(0))]
 
-def predict(model_name, base_model, testset, model_inputs="image", adapter_model=None, cache_file=None, timeout=None, verifier_checkpoint=None):
+def predict(model_name, base_model, testset, model_inputs="image", adapter_model=None, cache_file=None, timeout=None, verifier_checkpoint=None, use_mcts=False):
     predictions, worker_preds = list(), list()
     model, processor = load_model(
         model_name_or_path=base_model,
@@ -126,13 +131,22 @@ def predict(model_name, base_model, testset, model_inputs="image", adapter_model
     )
     if adapter_model is not None:
         model, processor = adapter.load(model, processor, adapter_model)
-    # if we don't have a timeout (i.e., only run mcts until we obtain smth compileable), we can use fast metrics
-    pipe = DetikzifyPipeline(
-        model=model, 
-        processor=processor, 
-        metric="model" if timeout else "fast",
-        verifier_checkpoint=verifier_checkpoint
-    )
+    # if we don't have a timeout (i.e., only run mcts/beam until we obtain smth compileable), we can use fast metrics
+    if use_mcts:
+        from detikzify.infer.old_generate import DetikzifyPipeline
+        pipe = DetikzifyPipeline(
+            model=model, 
+            processor=processor, 
+            metric="model" if timeout else "fast"
+        )
+    else:
+        from detikzify.infer import DetikzifyPipeline
+        pipe = DetikzifyPipeline(
+            model=model, 
+            processor=processor, 
+            metric="model" if timeout else "fast",
+            verifier_checkpoint=verifier_checkpoint
+        )
 
     if cache_file and isfile(cache_file):
         with open(cache_file) as f:
@@ -237,6 +251,7 @@ if __name__ == "__main__":
                 cache_file=cache_file,
                 timeout=args.timeout,
                 verifier_checkpoint=args.verifier_checkpoint if args.verifier_type == "finetuned" else None,
+                use_mcts=args.mcts,
             )
 
     if RANK == 0: # Scoring only on main process
