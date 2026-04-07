@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+*.parquet
+
+prm_dataset/
+qwen3vl-prm-finetuned/
 # Distribution / packaging
 .Python
 build/

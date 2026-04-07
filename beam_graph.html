@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Beam Search Graph</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d1117;color:#c9d1d9;font-family:monospace}
+  #toolbar{position:fixed;top:0;left:0;right:0;z-index:10;
+    background:#161b22;border-bottom:1px solid #30363d;
+    padding:8px 16px;display:flex;gap:16px;align-items:center}
+  #toolbar h1{font-size:14px;color:#58a6ff}
+  #toolbar label{font-size:12px;color:#8b949e}
+  #legend{position:fixed;bottom:16px;left:16px;z-index:10;
+    background:#161b22cc;border:1px solid #30363d;
+    padding:10px;border-radius:6px;font-size:11px;min-width:160px}
+  .legend-row{display:flex;align-items:center;gap:8px;margin:3px 0}
+  .legend-dot{width:12px;height:12px;border-radius:50%}
+  #tooltip{position:fixed;pointer-events:none;
+    background:#161b22ee;border:1px solid #30363d;
+    border-radius:6px;padding:10px;font-size:11px;
+    max-width:320px;z-index:20;display:none;line-height:1.6}
+  #tooltip .tt-title{color:#58a6ff;font-weight:bold;margin-bottom:6px}
+  #tooltip .tt-row{display:flex;justify-content:space-between;gap:16px}
+  #tooltip .tt-key{color:#8b949e}
+  #tooltip .tt-val{color:#e6edf3}
+  #tooltip .tt-line{color:#7ee787;margin-top:6px;padding-top:6px;
+    border-top:1px solid #30363d;word-break:break-all;white-space:pre-wrap}
+  svg{display:block;margin-top:48px}
+  .node circle{stroke-width:2;cursor:grab;transition:stroke 0.2s,stroke-width 0.2s}
+  .node circle:hover{stroke-width:4}
+  .node.selected circle{stroke:#58a6ff!important;stroke-width:3}
+  .node.finished circle{stroke-dasharray:4 2}
+  .node text{font-size:8px;fill:#c9d1d9;pointer-events:none;text-anchor:middle}
+  .link{stroke-opacity:0.6;marker-end:url(#arrow)}
+  .step-label{font-size:11px;fill:#8b949e;text-anchor:middle}
+</style>
+</head>
+<body>
+<div id="toolbar">
+  <h1>🔍 Beam Search Graph</h1>
+  <label>Layout:
+    <select id="layout-select">
+      <option value="force">Force-directed</option>
+      <option value="grid" selected>Grid (step × beam)</option>
+    </select>
+  </label>
+  <label>Link strength:
+    <input type="range" id="link-strength" min="0" max="1" step="0.05" value="0.3"/>
+  </label>
+  <label><input type="checkbox" id="show-labels" checked/> Labels</label>
+  <label><input type="checkbox" id="only-selected"/> Selected only</label>
+  <span id="stats" style="margin-left:auto;color:#8b949e;font-size:12px;"></span>
+</div>
+<div id="legend">
+  <div style="font-weight:bold;margin-bottom:6px;color:#58a6ff;">Score colour</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#00ff00"></div> 1.0 (best)</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#ffff00"></div> 0.5</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#ff0000"></div> 0.0 (worst)</div>
+  <hr style="border-color:#30363d;margin:6px 0"/>
+  <div class="legend-row"><div class="legend-dot" style="background:#444;border:2px solid #58a6ff"></div> selected</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#444;border:2px dashed #aaa"></div> finished</div>
+</div>
+<div id="tooltip"></div>
+<svg id="graph"></svg>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+const RAW={
+  "nodes": [
+    {
+      "id": "s0_b0_n1",
+      "label": "[0:0] <empty>",
+      "step": 0,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.0,
+      "cumulative": 0.0,
+      "lines": 0,
+      "tokens": 300,
+      "scored_steps": 0,
+      "last_line": "<empty>",
+      "finished": false,
+      "selected": true,
+      "rank": null
+    },
+    {
+      "id": "s1_b0_n2",
+      "label": "[1:0] \\documentclass[10pt]{article}",
+      "step": 1,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 1,
+      "tokens": 309,
+      "scored_steps": 0,
+      "last_line": "\\documentclass[10pt]{article}",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s1_b0_n3",
+      "label": "[1:0] \\documentclass[final,3p,times]{elsarticl\u2026",
+      "step": 1,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 1,
+      "tokens": 314,
+      "scored_steps": 0,
+      "last_line": "\\documentclass[final,3p,times]{elsarticle}",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s1_b0_n4",
+      "label": "[1:0] \\documentclass[final,5p,times,twocolumn]\u2026",
+      "step": 1,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 1,
+      "tokens": 318,
+      "scored_steps": 0,
+      "last_line": "\\documentclass[final,5p,times,twocolumn]{elsarticle}",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s1_b1_n5",
+      "label": "[1:1] \\documentclass[final,3p,times]{elsarticl\u2026",
+      "step": 1,
+      "beam_idx": 1,
+      "score": 0.0,
+      "verifier": 0.0,
+      "cumulative": 0.0,
+      "lines": 1,
+      "tokens": 314,
+      "scored_steps": 0,
+      "last_line": "\\documentclass[final,3p,times]{elsarticle}",
+      "finished": false,
+      "selected": true,
+      "rank": null
+    },
+    {
+      "id": "s1_b2_n6",
+      "label": "[1:2] \\documentclass[final,5p,times,twocolumn]\u2026",
+      "step": 1,
+      "beam_idx": 2,
+      "score": 0.0,
+      "verifier": 0.0,
+      "cumulative": 0.0,
+      "lines": 1,
+      "tokens": 318,
+      "scored_steps": 0,
+      "last_line": "\\documentclass[final,5p,times,twocolumn]{elsarticle}",
+      "finished": false,
+      "selected": true,
+      "rank": null
+    },
+    {
+      "id": "s2_b0_n7",
+      "label": "[2:0] \\usepackage{amsmath,amsthm,amssymb,latex\u2026",
+      "step": 2,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 2,
+      "tokens": 334,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{amsmath,amsthm,amssymb,latexsym,amscd,xcolor}",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s2_b0_n8",
+      "label": "[2:0] \\usepackage{amsmath}",
+      "step": 2,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 2,
+      "tokens": 317,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{amsmath}",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s2_b1_n9",
+      "label": "[2:1] \\usepackage{amsmath,amsthm,amscd,amsfont\u2026",
+      "step": 2,
+      "beam_idx": 1,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 2,
+      "tokens": 351,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{amsmath,amsthm,amscd,amsfonts,amssymb,epic,eepic,bbm,graphicx,ytable...",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s3_b0_n10",
+      "label": "[3:0] \\usepackage{tikz}",
+      "step": 3,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 3,
+      "tokens": 341,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{tikz}",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s3_b1_n11",
+      "label": "[3:1] \\usepackage{amssymb}",
+      "step": 3,
+      "beam_idx": 1,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 3,
+      "tokens": 325,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{amssymb}",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s3_b2_n12",
+      "label": "[3:2] \\usepackage{tikz}",
+      "step": 3,
+      "beam_idx": 2,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 3,
+      "tokens": 358,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{tikz}",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s4_b0_n13",
+      "label": "[4:0] \\begin{document}",
+      "step": 4,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 4,
+      "tokens": 346,
+      "scored_steps": 0,
+      "last_line": "\\begin{document}",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s4_b1_n14",
+      "label": "[4:1] \\usepackage{tikz}",
+      "step": 4,
+      "beam_idx": 1,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 4,
+      "tokens": 332,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{tikz}",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s4_b2_n15",
+      "label": "[4:2] \\usepackage{tkz-euclide}",
+      "step": 4,
+      "beam_idx": 2,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 4,
+      "tokens": 368,
+      "scored_steps": 0,
+      "last_line": "\\usepackage{tkz-euclide}",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s5_b0_n16",
+      "label": "[5:0] \\begin{tikzpicture}",
+      "step": 5,
+      "beam_idx": 0,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 5,
+      "tokens": 353,
+      "scored_steps": 0,
+      "last_line": "\\begin{tikzpicture}",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s5_b1_n17",
+      "label": "[5:1] \\usetikzlibrary{arrows,decorations.pathm\u2026",
+      "step": 5,
+      "beam_idx": 1,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 5,
+      "tokens": 361,
+      "scored_steps": 0,
+      "last_line": "\\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petr...",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s5_b1_n18",
+      "label": "[5:1] \\usetikzlibrary{arrows, automata, decora\u2026",
+      "step": 5,
+      "beam_idx": 1,
+      "score": 0.0,
+      "verifier": 0.5,
+      "cumulative": 0.0,
+      "lines": 5,
+      "tokens": 357,
+      "scored_steps": 0,
+      "last_line": "\\usetikzlibrary{arrows, automata, decorations.pathreplacing, fit, matrix, patter...",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s6_b0_n19",
+      "label": "[6:0]   \\draw [fill=green!50] (0,0) rectangle \u2026",
+      "step": 6,
+      "beam_idx": 0,
+      "score": 0.6,
+      "verifier": 0.6,
+      "cumulative": 0.6,
+      "lines": 6,
+      "tokens": 376,
+      "scored_steps": 1,
+      "last_line": "  \\draw [fill=green!50] (0,0) rectangle (2,2.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s6_b0_n20",
+      "label": "[6:0]   \\draw[fill=green!30] (0,0) rectangle (\u2026",
+      "step": 6,
+      "beam_idx": 0,
+      "score": 0.6,
+      "verifier": 0.6,
+      "cumulative": 0.6,
+      "lines": 6,
+      "tokens": 376,
+      "scored_steps": 1,
+      "last_line": "  \\draw[fill=green!30] (0,0) rectangle (2,2.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s6_b0_n21",
+      "label": "[6:0]   \\draw[fill=green!30] (0,0) rectangle (\u2026",
+      "step": 6,
+      "beam_idx": 0,
+      "score": 0.6,
+      "verifier": 0.6,
+      "cumulative": 0.6,
+      "lines": 6,
+      "tokens": 374,
+      "scored_steps": 1,
+      "last_line": "  \\draw[fill=green!30] (0,0) rectangle (2,2);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s7_b2_n22",
+      "label": "[7:2]   \\draw[very thick] (0,0) -- (2,0) -- (2\u2026",
+      "step": 7,
+      "beam_idx": 2,
+      "score": 0.6,
+      "verifier": 0.6,
+      "cumulative": 0.6,
+      "lines": 7,
+      "tokens": 410,
+      "scored_steps": 2,
+      "last_line": "  \\draw[very thick] (0,0) -- (2,0) -- (2,2) -- (0,2) -- (0,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s7_b2_n23",
+      "label": "[7:2]   \\draw[very thick] (0,0) -- (2,0) -- (2\u2026",
+      "step": 7,
+      "beam_idx": 2,
+      "score": 0.6,
+      "verifier": 0.6,
+      "cumulative": 0.6,
+      "lines": 7,
+      "tokens": 407,
+      "scored_steps": 2,
+      "last_line": "  \\draw[very thick] (0,0) -- (2,0) -- (2,2) -- (0,2) -- cycle;",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s7_b0_n24",
+      "label": "[7:0]   \\draw [fill=green!50] (2,2.5) -- (2.2,\u2026",
+      "step": 7,
+      "beam_idx": 0,
+      "score": 0.53,
+      "verifier": 0.5,
+      "cumulative": 0.53,
+      "lines": 7,
+      "tokens": 429,
+      "scored_steps": 2,
+      "last_line": "  \\draw [fill=green!50] (2,2.5) -- (2.2,2.7) -- (4.2,2.7) -- (4.2,0.7) -- (2,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s8_b0_n25",
+      "label": "[8:0]   \\draw (1,1) node {$\\textbf{input}$};",
+      "step": 8,
+      "beam_idx": 0,
+      "score": 0.67,
+      "verifier": 0.7,
+      "cumulative": 0.67,
+      "lines": 8,
+      "tokens": 427,
+      "scored_steps": 3,
+      "last_line": "  \\draw (1,1) node {$\\textbf{input}$};",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s8_b0_n26",
+      "label": "[8:0]   \\draw (1,1) node {$\\mathbf{input}$};",
+      "step": 8,
+      "beam_idx": 0,
+      "score": 0.67,
+      "verifier": 0.7,
+      "cumulative": 0.67,
+      "lines": 8,
+      "tokens": 427,
+      "scored_steps": 3,
+      "last_line": "  \\draw (1,1) node {$\\mathbf{input}$};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s8_b0_n27",
+      "label": "[8:0]   \\draw[fill=cyan!30] (3,0) -- (5,0) -- \u2026",
+      "step": 8,
+      "beam_idx": 0,
+      "score": 0.6,
+      "verifier": 0.6,
+      "cumulative": 0.6,
+      "lines": 8,
+      "tokens": 449,
+      "scored_steps": 3,
+      "last_line": "  \\draw[fill=cyan!30] (3,0) -- (5,0) -- (5,2) -- (3,2) -- (3,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s9_b0_n28",
+      "label": "[9:0]   \\draw[very thick,->] (2.2,1) -- (3.5,1\u2026",
+      "step": 9,
+      "beam_idx": 0,
+      "score": 0.621,
+      "verifier": 0.6,
+      "cumulative": 0.621,
+      "lines": 9,
+      "tokens": 451,
+      "scored_steps": 4,
+      "last_line": "  \\draw[very thick,->] (2.2,1) -- (3.5,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s9_b0_n29",
+      "label": "[9:0]   \\draw[->,thick] (2.2,1) -- (3.8,1);",
+      "step": 9,
+      "beam_idx": 0,
+      "score": 0.621,
+      "verifier": 0.6,
+      "cumulative": 0.621,
+      "lines": 9,
+      "tokens": 451,
+      "scored_steps": 4,
+      "last_line": "  \\draw[->,thick] (2.2,1) -- (3.8,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s9_b0_n30",
+      "label": "[9:0]   \\draw[very thick,->] (2.2,1) -- (3.8,1\u2026",
+      "step": 9,
+      "beam_idx": 0,
+      "score": 0.621,
+      "verifier": 0.6,
+      "cumulative": 0.621,
+      "lines": 9,
+      "tokens": 451,
+      "scored_steps": 4,
+      "last_line": "  \\draw[very thick,->] (2.2,1) -- (3.8,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s10_b0_n31",
+      "label": "[10:0]   \\draw (2.85,1.2) node {\\tiny{Conv}};",
+      "step": 10,
+      "beam_idx": 0,
+      "score": 0.6063,
+      "verifier": 0.6,
+      "cumulative": 0.6063,
+      "lines": 10,
+      "tokens": 469,
+      "scored_steps": 5,
+      "last_line": "  \\draw (2.85,1.2) node {\\tiny{Conv}};",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s10_b0_n32",
+      "label": "[10:0]   \\draw (2.85,1.2) node {\\scriptsize{Con\u2026",
+      "step": 10,
+      "beam_idx": 0,
+      "score": 0.6063,
+      "verifier": 0.6,
+      "cumulative": 0.6063,
+      "lines": 10,
+      "tokens": 470,
+      "scored_steps": 5,
+      "last_line": "  \\draw (2.85,1.2) node {\\scriptsize{Conv}};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s10_b0_n33",
+      "label": "[10:0]   \\draw (2.8,1.2) node {\\scriptsize{Conv\u2026",
+      "step": 10,
+      "beam_idx": 0,
+      "score": 0.6063,
+      "verifier": 0.6,
+      "cumulative": 0.6063,
+      "lines": 10,
+      "tokens": 470,
+      "scored_steps": 5,
+      "last_line": "  \\draw (2.8,1.2) node {\\scriptsize{Conv}};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s11_b1_n34",
+      "label": "[11:1]   \\draw[fill=cyan!30] (3.7,0) -- (5.7,0)\u2026",
+      "step": 11,
+      "beam_idx": 1,
+      "score": 0.6719,
+      "verifier": 0.7,
+      "cumulative": 0.6719,
+      "lines": 11,
+      "tokens": 519,
+      "scored_steps": 6,
+      "last_line": "  \\draw[fill=cyan!30] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s11_b0_n35",
+      "label": "[11:0]   \\draw[fill=cyan!30] (3.7,0) -- (5.7,0)\u2026",
+      "step": 11,
+      "beam_idx": 0,
+      "score": 0.6019,
+      "verifier": 0.6,
+      "cumulative": 0.6019,
+      "lines": 11,
+      "tokens": 518,
+      "scored_steps": 6,
+      "last_line": "  \\draw[fill=cyan!30] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s11_b2_n36",
+      "label": "[11:2]   \\draw[fill=cyan!30] (3.7,0) -- (5.7,0)\u2026",
+      "step": 11,
+      "beam_idx": 2,
+      "score": 0.6019,
+      "verifier": 0.6,
+      "cumulative": 0.6019,
+      "lines": 11,
+      "tokens": 519,
+      "scored_steps": 6,
+      "last_line": "  \\draw[fill=cyan!30] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s12_b0_n37",
+      "label": "[12:0]   \\draw[fill=cyan!30] (3.7,2) -- (3.7+0.\u2026",
+      "step": 12,
+      "beam_idx": 0,
+      "score": 0.6916,
+      "verifier": 0.7,
+      "cumulative": 0.6916,
+      "lines": 12,
+      "tokens": 576,
+      "scored_steps": 7,
+      "last_line": "  \\draw[fill=cyan!30] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s12_b1_n38",
+      "label": "[12:1]   \\draw[fill=cyan!30] (3.7,2) -- (3.7+0.\u2026",
+      "step": 12,
+      "beam_idx": 1,
+      "score": 0.6006,
+      "verifier": 0.6,
+      "cumulative": 0.6006,
+      "lines": 12,
+      "tokens": 575,
+      "scored_steps": 7,
+      "last_line": "  \\draw[fill=cyan!30] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s12_b2_n39",
+      "label": "[12:2]   \\draw[fill=cyan!30] (3.7,2) -- (3.7+0.\u2026",
+      "step": 12,
+      "beam_idx": 2,
+      "score": 0.6006,
+      "verifier": 0.6,
+      "cumulative": 0.6006,
+      "lines": 12,
+      "tokens": 576,
+      "scored_steps": 7,
+      "last_line": "  \\draw[fill=cyan!30] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s13_b0_n40",
+      "label": "[13:0]   \\draw[fill=cyan!30] (5.7,2) -- (5.7+0.\u2026",
+      "step": 13,
+      "beam_idx": 0,
+      "score": 0.6975,
+      "verifier": 0.7,
+      "cumulative": 0.6975,
+      "lines": 13,
+      "tokens": 631,
+      "scored_steps": 8,
+      "last_line": "  \\draw[fill=cyan!30] (5.7,2) -- (5.7+0.5,2+0.5) -- (5.7+0.5,0.5) -- (5.7,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s13_b0_n41",
+      "label": "[13:0]   \\draw[very thick] (3.7,2) -- (5.7,2) -\u2026",
+      "step": 13,
+      "beam_idx": 0,
+      "score": 0.6275,
+      "verifier": 0.6,
+      "cumulative": 0.6275,
+      "lines": 13,
+      "tokens": 622,
+      "scored_steps": 8,
+      "last_line": "  \\draw[very thick] (3.7,2) -- (5.7,2) -- (5.7,0) -- (3.7,0) -- (3.7,2);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s13_b1_n42",
+      "label": "[13:1]   \\draw[very thick] (3.7,2) -- (5.7,2) -\u2026",
+      "step": 13,
+      "beam_idx": 1,
+      "score": 0.6002,
+      "verifier": 0.6,
+      "cumulative": 0.6002,
+      "lines": 13,
+      "tokens": 621,
+      "scored_steps": 8,
+      "last_line": "  \\draw[very thick] (3.7,2) -- (5.7,2) -- (5.7,0) -- (3.7,0) -- (3.7,2);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s14_b0_n43",
+      "label": "[14:0]   \\draw[very thick] (3.7,0) -- (5.7,0) -\u2026",
+      "step": 14,
+      "beam_idx": 0,
+      "score": 0.6292,
+      "verifier": 0.6,
+      "cumulative": 0.6292,
+      "lines": 14,
+      "tokens": 677,
+      "scored_steps": 9,
+      "last_line": "  \\draw[very thick] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s14_b1_n44",
+      "label": "[14:1]   \\draw[very thick,->] (5.9,1) -- (7.2,1\u2026",
+      "step": 14,
+      "beam_idx": 1,
+      "score": 0.6082,
+      "verifier": 0.6,
+      "cumulative": 0.6082,
+      "lines": 14,
+      "tokens": 646,
+      "scored_steps": 9,
+      "last_line": "  \\draw[very thick,->] (5.9,1) -- (7.2,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s14_b2_n45",
+      "label": "[14:2]   \\draw[very thick,->] (5.9,1) -- (7.2,1\u2026",
+      "step": 14,
+      "beam_idx": 2,
+      "score": 0.6001,
+      "verifier": 0.6,
+      "cumulative": 0.6001,
+      "lines": 14,
+      "tokens": 645,
+      "scored_steps": 9,
+      "last_line": "  \\draw[very thick,->] (5.9,1) -- (7.2,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s15_b0_n46",
+      "label": "[15:0]   \\draw[very thick] (3.7,2) -- (3.7+0.5,\u2026",
+      "step": 15,
+      "beam_idx": 0,
+      "score": 0.6788,
+      "verifier": 0.7,
+      "cumulative": 0.6788,
+      "lines": 15,
+      "tokens": 731,
+      "scored_steps": 10,
+      "last_line": "  \\draw[very thick] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s15_b2_n47",
+      "label": "[15:2]   \\draw (6.5,1.2) node {\\tiny{Pool}};",
+      "step": 15,
+      "beam_idx": 2,
+      "score": 0.67,
+      "verifier": 0.7,
+      "cumulative": 0.67,
+      "lines": 15,
+      "tokens": 663,
+      "scored_steps": 10,
+      "last_line": "  \\draw (6.5,1.2) node {\\tiny{Pool}};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s15_b1_n48",
+      "label": "[15:1]   \\draw (6.5,1.2) node {\\scriptsize{Pool\u2026",
+      "step": 15,
+      "beam_idx": 1,
+      "score": 0.6025,
+      "verifier": 0.6,
+      "cumulative": 0.6025,
+      "lines": 15,
+      "tokens": 665,
+      "scored_steps": 10,
+      "last_line": "  \\draw (6.5,1.2) node {\\scriptsize{Pool}};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s16_b0_n49",
+      "label": "[16:0]   \\draw[very thick] (5.7,2) -- (5.7+0.5,\u2026",
+      "step": 16,
+      "beam_idx": 0,
+      "score": 0.6936,
+      "verifier": 0.7,
+      "cumulative": 0.6936,
+      "lines": 16,
+      "tokens": 783,
+      "scored_steps": 11,
+      "last_line": "  \\draw[very thick] (5.7,2) -- (5.7+0.5,2+0.5) -- (5.7+0.5,0.5) -- (5.7,0);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s16_b1_n50",
+      "label": "[16:1]   \\draw[fill=red!30] (7.4,0.5) -- (8.4,0\u2026",
+      "step": 16,
+      "beam_idx": 1,
+      "score": 0.621,
+      "verifier": 0.6,
+      "cumulative": 0.621,
+      "lines": 16,
+      "tokens": 722,
+      "scored_steps": 11,
+      "last_line": "  \\draw[fill=red!30] (7.4,0.5) -- (8.4,0.5) -- (8.4,1.5) -- (7.4,1.5) -- (7.4,0....",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s16_b2_n51",
+      "label": "[16:2]   \\draw[fill=red!30] (7.4,0.5) -- (8.4,0\u2026",
+      "step": 16,
+      "beam_idx": 2,
+      "score": 0.6007,
+      "verifier": 0.6,
+      "cumulative": 0.6007,
+      "lines": 16,
+      "tokens": 724,
+      "scored_steps": 11,
+      "last_line": "  \\draw[fill=red!30] (7.4,0.5) -- (8.4,0.5) -- (8.4,1.5) -- (7.4,1.5) -- (7.4,0....",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s17_b0_n52",
+      "label": "[17:0]   \\draw[very thick,->] (6.2,1) -- (7.5,1\u2026",
+      "step": 17,
+      "beam_idx": 0,
+      "score": 0.6981,
+      "verifier": 0.7,
+      "cumulative": 0.6981,
+      "lines": 17,
+      "tokens": 807,
+      "scored_steps": 12,
+      "last_line": "  \\draw[very thick,->] (6.2,1) -- (7.5,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s17_b1_n53",
+      "label": "[17:1]   \\draw[fill=red!30] (7.4,1.5) -- (7.4+0\u2026",
+      "step": 17,
+      "beam_idx": 1,
+      "score": 0.6763,
+      "verifier": 0.7,
+      "cumulative": 0.6763,
+      "lines": 17,
+      "tokens": 787,
+      "scored_steps": 12,
+      "last_line": "  \\draw[fill=red!30] (7.4,1.5) -- (7.4+0.5,1.5+0.5) -- (8.4+0.5,1.5+0.5) -- (8.4...",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s17_b2_n54",
+      "label": "[17:2]   \\draw[fill=red!30] (7.4,1.5) -- (7.4+0\u2026",
+      "step": 17,
+      "beam_idx": 2,
+      "score": 0.6702,
+      "verifier": 0.7,
+      "cumulative": 0.6702,
+      "lines": 17,
+      "tokens": 789,
+      "scored_steps": 12,
+      "last_line": "  \\draw[fill=red!30] (7.4,1.5) -- (7.4+0.5,1.5+0.5) -- (8.4+0.5,1.5+0.5) -- (8.4...",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s18_b1_n55",
+      "label": "[18:1]   \\draw[very thick] (7.4,1.5) -- (8.4,1.\u2026",
+      "step": 18,
+      "beam_idx": 1,
+      "score": 0.6929,
+      "verifier": 0.7,
+      "cumulative": 0.6929,
+      "lines": 18,
+      "tokens": 843,
+      "scored_steps": 13,
+      "last_line": "  \\draw[very thick] (7.4,1.5) -- (8.4,1.5) -- (8.4,0.5) -- (7.4,0.5) -- (7.4,1.5...",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s18_b2_n56",
+      "label": "[18:2]   \\draw[very thick] (7.4,1.5) -- (8.4,1.\u2026",
+      "step": 18,
+      "beam_idx": 2,
+      "score": 0.6911,
+      "verifier": 0.7,
+      "cumulative": 0.6911,
+      "lines": 18,
+      "tokens": 845,
+      "scored_steps": 13,
+      "last_line": "  \\draw[very thick] (7.4,1.5) -- (8.4,1.5) -- (8.4,0.5) -- (7.4,0.5) -- (7.4,1.5...",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s18_b0_n57",
+      "label": "[18:0]   \\draw (6.85,1.2) node {\\scriptsize{Poo\u2026",
+      "step": 18,
+      "beam_idx": 0,
+      "score": 0.6294,
+      "verifier": 0.6,
+      "cumulative": 0.6294,
+      "lines": 18,
+      "tokens": 826,
+      "scored_steps": 13,
+      "last_line": "  \\draw (6.85,1.2) node {\\scriptsize{Pool}};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s19_b0_n58",
+      "label": "[19:0]   \\draw[very thick,->] (8.6,1) -- (9.9,1\u2026",
+      "step": 19,
+      "beam_idx": 0,
+      "score": 0.6979,
+      "verifier": 0.7,
+      "cumulative": 0.6979,
+      "lines": 19,
+      "tokens": 867,
+      "scored_steps": 14,
+      "last_line": "  \\draw[very thick,->] (8.6,1) -- (9.9,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s19_b1_n59",
+      "label": "[19:1]   \\draw[very thick,->] (8.6,1) -- (9.9,1\u2026",
+      "step": 19,
+      "beam_idx": 1,
+      "score": 0.6973,
+      "verifier": 0.7,
+      "cumulative": 0.6973,
+      "lines": 19,
+      "tokens": 869,
+      "scored_steps": 14,
+      "last_line": "  \\draw[very thick,->] (8.6,1) -- (9.9,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s19_b2_n60",
+      "label": "[19:2]   \\draw[fill=red!30] (7.7,1.3) -- (8.7,1\u2026",
+      "step": 19,
+      "beam_idx": 2,
+      "score": 0.6788,
+      "verifier": 0.7,
+      "cumulative": 0.6788,
+      "lines": 19,
+      "tokens": 885,
+      "scored_steps": 14,
+      "last_line": "  \\draw[fill=red!30] (7.7,1.3) -- (8.7,1.3) -- (8.7,0.3) -- (7.7,0.3) -- (7.7,1....",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s20_b0_n61",
+      "label": "[20:0]   \\draw (9.2,1.2) node {\\tiny{Conv}};",
+      "step": 20,
+      "beam_idx": 0,
+      "score": 0.6994,
+      "verifier": 0.7,
+      "cumulative": 0.6994,
+      "lines": 20,
+      "tokens": 885,
+      "scored_steps": 15,
+      "last_line": "  \\draw (9.2,1.2) node {\\tiny{Conv}};",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s20_b1_n62",
+      "label": "[20:1]   \\draw (9.2,1.2) node {\\scriptsize{Conv\u2026",
+      "step": 20,
+      "beam_idx": 1,
+      "score": 0.6992,
+      "verifier": 0.7,
+      "cumulative": 0.6992,
+      "lines": 20,
+      "tokens": 888,
+      "scored_steps": 15,
+      "last_line": "  \\draw (9.2,1.2) node {\\scriptsize{Conv}};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s20_b2_n63",
+      "label": "[20:2]   \\draw[fill=red!30] (7.7,1.3) -- (7.7+0\u2026",
+      "step": 20,
+      "beam_idx": 2,
+      "score": 0.6936,
+      "verifier": 0.7,
+      "cumulative": 0.6936,
+      "lines": 20,
+      "tokens": 942,
+      "scored_steps": 15,
+      "last_line": "  \\draw[fill=red!30] (7.7,1.3) -- (7.7+0.5,1.8) -- (8.7+0.5,1.8) -- (8.7,1.3);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s21_b0_n64",
+      "label": "[21:0]   \\draw[fill=blue!20] (10,0.5) -- (11,0.\u2026",
+      "step": 21,
+      "beam_idx": 0,
+      "score": 0.6998,
+      "verifier": 0.7,
+      "cumulative": 0.6998,
+      "lines": 21,
+      "tokens": 934,
+      "scored_steps": 16,
+      "last_line": "  \\draw[fill=blue!20] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s21_b0_n65",
+      "label": "[21:0]   \\draw[fill=blue!30] (10,0.5) -- (11,0.\u2026",
+      "step": 21,
+      "beam_idx": 0,
+      "score": 0.6998,
+      "verifier": 0.7,
+      "cumulative": 0.6998,
+      "lines": 21,
+      "tokens": 934,
+      "scored_steps": 16,
+      "last_line": "  \\draw[fill=blue!30] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s21_b1_n66",
+      "label": "[21:1]   \\draw[fill=blue!30] (10,0.5) -- (11,0.\u2026",
+      "step": 21,
+      "beam_idx": 1,
+      "score": 0.6998,
+      "verifier": 0.7,
+      "cumulative": 0.6998,
+      "lines": 21,
+      "tokens": 937,
+      "scored_steps": 16,
+      "last_line": "  \\draw[fill=blue!30] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s22_b0_n67",
+      "label": "[22:0]   \\draw[fill=blue!20] (10,1.5) -- (10+0.\u2026",
+      "step": 22,
+      "beam_idx": 0,
+      "score": 0.6999,
+      "verifier": 0.7,
+      "cumulative": 0.6999,
+      "lines": 22,
+      "tokens": 991,
+      "scored_steps": 17,
+      "last_line": "  \\draw[fill=blue!20] (10,1.5) -- (10+0.5,1.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s22_b1_n68",
+      "label": "[22:1]   \\draw[fill=blue!30] (10,1.5) -- (10+0.\u2026",
+      "step": 22,
+      "beam_idx": 1,
+      "score": 0.6999,
+      "verifier": 0.7,
+      "cumulative": 0.6999,
+      "lines": 22,
+      "tokens": 991,
+      "scored_steps": 17,
+      "last_line": "  \\draw[fill=blue!30] (10,1.5) -- (10+0.5,1.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s22_b2_n69",
+      "label": "[22:2]   \\draw[fill=blue!30] (10,1.5) -- (10+0.\u2026",
+      "step": 22,
+      "beam_idx": 2,
+      "score": 0.6999,
+      "verifier": 0.7,
+      "cumulative": 0.6999,
+      "lines": 22,
+      "tokens": 994,
+      "scored_steps": 17,
+      "last_line": "  \\draw[fill=blue!30] (10,1.5) -- (10+0.5,1.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s23_b1_n70",
+      "label": "[23:1]   \\draw[fill=blue!30] (11,0.5) -- (11+0.\u2026",
+      "step": 23,
+      "beam_idx": 1,
+      "score": 0.805,
+      "verifier": 0.85,
+      "cumulative": 0.805,
+      "lines": 23,
+      "tokens": 1048,
+      "scored_steps": 18,
+      "last_line": "  \\draw[fill=blue!30] (11,0.5) -- (11+0.5,0.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s23_b0_n71",
+      "label": "[23:0]   \\draw[fill=blue!10] (11,0.5) -- (11+0.\u2026",
+      "step": 23,
+      "beam_idx": 0,
+      "score": 0.7,
+      "verifier": 0.7,
+      "cumulative": 0.7,
+      "lines": 23,
+      "tokens": 1048,
+      "scored_steps": 18,
+      "last_line": "  \\draw[fill=blue!10] (11,0.5) -- (11+0.5,0.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s23_b0_n72",
+      "label": "[23:0]   \\draw[very thick] (10,1.5) -- (11,1.5)\u2026",
+      "step": 23,
+      "beam_idx": 0,
+      "score": 0.7,
+      "verifier": 0.7,
+      "cumulative": 0.7,
+      "lines": 23,
+      "tokens": 1037,
+      "scored_steps": 18,
+      "last_line": "  \\draw[very thick] (10,1.5) -- (11,1.5) -- (11,0.5) -- (10,0.5) -- (10,1.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s24_b0_n73",
+      "label": "[24:0]   \\draw[very thick] (10,0.5) -- (11,0.5)\u2026",
+      "step": 24,
+      "beam_idx": 0,
+      "score": 0.7315,
+      "verifier": 0.7,
+      "cumulative": 0.7315,
+      "lines": 24,
+      "tokens": 1094,
+      "scored_steps": 19,
+      "last_line": "  \\draw[very thick] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s24_b1_n74",
+      "label": "[24:1]   \\draw[very thick] (10,0.5) -- (11,0.5)\u2026",
+      "step": 24,
+      "beam_idx": 1,
+      "score": 0.7,
+      "verifier": 0.7,
+      "cumulative": 0.7,
+      "lines": 24,
+      "tokens": 1094,
+      "scored_steps": 19,
+      "last_line": "  \\draw[very thick] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s24_b2_n75",
+      "label": "[24:2]   \\draw[fill=blue!20] (11,0.5) -- (11+0.\u2026",
+      "step": 24,
+      "beam_idx": 2,
+      "score": 0.7,
+      "verifier": 0.7,
+      "cumulative": 0.7,
+      "lines": 24,
+      "tokens": 1094,
+      "scored_steps": 19,
+      "last_line": "  \\draw[fill=blue!20] (11,0.5) -- (11+0.5,0.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s25_b0_n76",
+      "label": "[25:0]   \\draw[very thick] (10,1.5) -- (11+0.5,\u2026",
+      "step": 25,
+      "beam_idx": 0,
+      "score": 0.7094,
+      "verifier": 0.7,
+      "cumulative": 0.7094,
+      "lines": 25,
+      "tokens": 1124,
+      "scored_steps": 20,
+      "last_line": "  \\draw[very thick] (10,1.5) -- (11+0.5,1.5+0.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s25_b0_n77",
+      "label": "[25:0]   \\draw (10.5,1) node {$\\vec{o}_1$};",
+      "step": 25,
+      "beam_idx": 0,
+      "score": 0.7094,
+      "verifier": 0.7,
+      "cumulative": 0.7094,
+      "lines": 25,
+      "tokens": 1113,
+      "scored_steps": 20,
+      "last_line": "  \\draw (10.5,1) node {$\\vec{o}_1$};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s25_b1_n78",
+      "label": "[25:1]   \\draw (10.5,1) node {$\\vec{o}_1$};",
+      "step": 25,
+      "beam_idx": 1,
+      "score": 0.7,
+      "verifier": 0.7,
+      "cumulative": 0.7,
+      "lines": 25,
+      "tokens": 1113,
+      "scored_steps": 20,
+      "last_line": "  \\draw (10.5,1) node {$\\vec{o}_1$};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s26_b0_n79",
+      "label": "[26:0]   \\draw[very thick] (11,0.5) -- (11+0.5,\u2026",
+      "step": 26,
+      "beam_idx": 0,
+      "score": 0.7028,
+      "verifier": 0.7,
+      "cumulative": 0.7028,
+      "lines": 26,
+      "tokens": 1154,
+      "scored_steps": 21,
+      "last_line": "  \\draw[very thick] (11,0.5) -- (11+0.5,0.5+0.5);",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s26_b1_n80",
+      "label": "[26:1]   \\draw[very thick,->] (11.1,1) -- (11.4\u2026",
+      "step": 26,
+      "beam_idx": 1,
+      "score": 0.7028,
+      "verifier": 0.7,
+      "cumulative": 0.7028,
+      "lines": 26,
+      "tokens": 1137,
+      "scored_steps": 21,
+      "last_line": "  \\draw[very thick,->] (11.1,1) -- (11.4,1);",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s26_b1_n81",
+      "label": "[26:1]   \\draw (10.5,0.75) node {$\\vec{o}_3$};",
+      "step": 26,
+      "beam_idx": 1,
+      "score": 0.7028,
+      "verifier": 0.7,
+      "cumulative": 0.7028,
+      "lines": 26,
+      "tokens": 1134,
+      "scored_steps": 21,
+      "last_line": "  \\draw (10.5,0.75) node {$\\vec{o}_3$};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s27_b2_n82",
+      "label": "[27:2]   \\draw (10.5,1.25) node {$\\vec{o}_2$};",
+      "step": 27,
+      "beam_idx": 2,
+      "score": 0.7709,
+      "verifier": 0.8,
+      "cumulative": 0.7709,
+      "lines": 27,
+      "tokens": 1155,
+      "scored_steps": 22,
+      "last_line": "  \\draw (10.5,1.25) node {$\\vec{o}_2$};",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s27_b0_n83",
+      "label": "[27:0]   \\draw (10.5,1) node {$\\hat{o}_1$};",
+      "step": 27,
+      "beam_idx": 0,
+      "score": 0.7009,
+      "verifier": 0.7,
+      "cumulative": 0.7009,
+      "lines": 27,
+      "tokens": 1173,
+      "scored_steps": 22,
+      "last_line": "  \\draw (10.5,1) node {$\\hat{o}_1$};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s27_b1_n84",
+      "label": "[27:1]   \\draw (11.2,1.2) node {\\tiny{Pool}};",
+      "step": 27,
+      "beam_idx": 1,
+      "score": 0.7009,
+      "verifier": 0.7,
+      "cumulative": 0.7009,
+      "lines": 27,
+      "tokens": 1155,
+      "scored_steps": 22,
+      "last_line": "  \\draw (11.2,1.2) node {\\tiny{Pool}};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s28_b0_n85",
+      "label": "[28:0] \\end{tikzpicture}",
+      "step": 28,
+      "beam_idx": 0,
+      "score": 0.8963,
+      "verifier": 0.95,
+      "cumulative": 0.8963,
+      "lines": 28,
+      "tokens": 1162,
+      "scored_steps": 23,
+      "last_line": "\\end{tikzpicture}",
+      "finished": false,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s28_b1_n86",
+      "label": "[28:1]   \\draw (10.5,1.5) node {$\\hat{o}_2$};",
+      "step": 28,
+      "beam_idx": 1,
+      "score": 0.7703,
+      "verifier": 0.8,
+      "cumulative": 0.7703,
+      "lines": 28,
+      "tokens": 1194,
+      "scored_steps": 23,
+      "last_line": "  \\draw (10.5,1.5) node {$\\hat{o}_2$};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s28_b1_n87",
+      "label": "[28:1]   \\draw (10.5,0.75) node {$\\hat{o}_2$};",
+      "step": 28,
+      "beam_idx": 1,
+      "score": 0.7703,
+      "verifier": 0.8,
+      "cumulative": 0.7703,
+      "lines": 28,
+      "tokens": 1194,
+      "scored_steps": 23,
+      "last_line": "  \\draw (10.5,0.75) node {$\\hat{o}_2$};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s29_b0_n88",
+      "label": "[29:0] \\end{document}",
+      "step": 29,
+      "beam_idx": 0,
+      "score": 0.8963,
+      "verifier": 0.5,
+      "cumulative": 0.8963,
+      "lines": 29,
+      "tokens": 1168,
+      "scored_steps": 23,
+      "last_line": "\\end{document}",
+      "finished": true,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s29_b1_n89",
+      "label": "[29:1]   \\draw (10.5,0.5) node {$\\hat{o}_3$};",
+      "step": 29,
+      "beam_idx": 1,
+      "score": 0.7911,
+      "verifier": 0.8,
+      "cumulative": 0.7911,
+      "lines": 29,
+      "tokens": 1215,
+      "scored_steps": 24,
+      "last_line": "  \\draw (10.5,0.5) node {$\\hat{o}_3$};",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s29_b2_n90",
+      "label": "[29:2]   \\draw (10.5,1.25) node {$\\hat{o}_1$};",
+      "step": 29,
+      "beam_idx": 2,
+      "score": 0.7211,
+      "verifier": 0.7,
+      "cumulative": 0.7211,
+      "lines": 29,
+      "tokens": 1215,
+      "scored_steps": 24,
+      "last_line": "  \\draw (10.5,1.25) node {$\\hat{o}_1$};",
+      "finished": false,
+      "selected": true,
+      "rank": 3
+    },
+    {
+      "id": "s30_b1_n91",
+      "label": "[30:1] \\end{tikzpicture}",
+      "step": 30,
+      "beam_idx": 1,
+      "score": 0.8963,
+      "verifier": 0.85,
+      "cumulative": 0.7907,
+      "lines": 29,
+      "tokens": 1168,
+      "scored_steps": 25,
+      "last_line": "\\end{tikzpicture}",
+      "finished": true,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s30_b2_n92",
+      "label": "[30:2] \\end{tikzpicture}",
+      "step": 30,
+      "beam_idx": 2,
+      "score": 0.7907,
+      "verifier": 0.85,
+      "cumulative": 0.7708,
+      "lines": 30,
+      "tokens": 1222,
+      "scored_steps": 25,
+      "last_line": "\\end{tikzpicture}",
+      "finished": false,
+      "selected": true,
+      "rank": 2
+    },
+    {
+      "id": "s31_b1_n93",
+      "label": "[31:1] \\end{document}",
+      "step": 31,
+      "beam_idx": 1,
+      "score": 0.8963,
+      "verifier": 0.5,
+      "cumulative": 0.7512,
+      "lines": 29,
+      "tokens": 1168,
+      "scored_steps": 25,
+      "last_line": "\\end{document}",
+      "finished": true,
+      "selected": true,
+      "rank": 1
+    },
+    {
+      "id": "s31_b2_n94",
+      "label": "[31:2] \\end{document}",
+      "step": 31,
+      "beam_idx": 2,
+      "score": 0.7512,
+      "verifier": 0.5,
+      "cumulative": 0.7322,
+      "lines": 31,
+      "tokens": 1228,
+      "scored_steps": 25,
+      "last_line": "\\end{document}",
+      "finished": true,
+      "selected": true,
+      "rank": 2
+    }
+  ],
+  "links": [
+    {
+      "source": "s0_b0_n1",
+      "target": "s1_b0_n2",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s1_b0_n2",
+      "target": "s1_b0_n3",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s1_b0_n3",
+      "target": "s1_b0_n4",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s1_b0_n4",
+      "target": "s2_b0_n7",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s2_b0_n7",
+      "target": "s2_b0_n8",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s1_b1_n5",
+      "target": "s2_b1_n9",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s2_b0_n8",
+      "target": "s3_b0_n10",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s2_b1_n9",
+      "target": "s3_b1_n11",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s1_b2_n6",
+      "target": "s3_b2_n12",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s3_b0_n10",
+      "target": "s4_b0_n13",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s3_b1_n11",
+      "target": "s4_b1_n14",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s3_b2_n12",
+      "target": "s4_b2_n15",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s4_b0_n13",
+      "target": "s5_b0_n16",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s4_b1_n14",
+      "target": "s5_b1_n17",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s5_b1_n17",
+      "target": "s5_b1_n18",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s5_b0_n16",
+      "target": "s6_b0_n19",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s6_b0_n19",
+      "target": "s6_b0_n20",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s6_b0_n20",
+      "target": "s6_b0_n21",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s4_b2_n15",
+      "target": "s7_b2_n22",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s7_b2_n22",
+      "target": "s7_b2_n23",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s6_b0_n21",
+      "target": "s7_b0_n24",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s7_b0_n24",
+      "target": "s8_b0_n25",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s8_b0_n25",
+      "target": "s8_b0_n26",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s8_b0_n26",
+      "target": "s8_b0_n27",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s8_b0_n27",
+      "target": "s9_b0_n28",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s9_b0_n28",
+      "target": "s9_b0_n29",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s9_b0_n29",
+      "target": "s9_b0_n30",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s9_b0_n30",
+      "target": "s10_b0_n31",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s10_b0_n31",
+      "target": "s10_b0_n32",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s10_b0_n32",
+      "target": "s10_b0_n33",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s5_b1_n18",
+      "target": "s11_b1_n34",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s10_b0_n33",
+      "target": "s11_b0_n35",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s7_b2_n23",
+      "target": "s11_b2_n36",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s11_b0_n35",
+      "target": "s12_b0_n37",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s11_b1_n34",
+      "target": "s12_b1_n38",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s11_b2_n36",
+      "target": "s12_b2_n39",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s12_b0_n37",
+      "target": "s13_b0_n40",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s13_b0_n40",
+      "target": "s13_b0_n41",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s12_b1_n38",
+      "target": "s13_b1_n42",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s13_b0_n41",
+      "target": "s14_b0_n43",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s13_b1_n42",
+      "target": "s14_b1_n44",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s12_b2_n39",
+      "target": "s14_b2_n45",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s14_b0_n43",
+      "target": "s15_b0_n46",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s14_b2_n45",
+      "target": "s15_b2_n47",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s14_b1_n44",
+      "target": "s15_b1_n48",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s15_b0_n46",
+      "target": "s16_b0_n49",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s15_b1_n48",
+      "target": "s16_b1_n50",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s15_b2_n47",
+      "target": "s16_b2_n51",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s16_b0_n49",
+      "target": "s17_b0_n52",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s16_b1_n50",
+      "target": "s17_b1_n53",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s16_b2_n51",
+      "target": "s17_b2_n54",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s17_b1_n53",
+      "target": "s18_b1_n55",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s17_b2_n54",
+      "target": "s18_b2_n56",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s17_b0_n52",
+      "target": "s18_b0_n57",
+      "verifier_score": 0.6,
+      "label": "0.60"
+    },
+    {
+      "source": "s18_b0_n57",
+      "target": "s19_b0_n58",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s18_b1_n55",
+      "target": "s19_b1_n59",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s18_b2_n56",
+      "target": "s19_b2_n60",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s19_b0_n58",
+      "target": "s20_b0_n61",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s19_b1_n59",
+      "target": "s20_b1_n62",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s19_b2_n60",
+      "target": "s20_b2_n63",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s20_b0_n61",
+      "target": "s21_b0_n64",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s21_b0_n64",
+      "target": "s21_b0_n65",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s20_b1_n62",
+      "target": "s21_b1_n66",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s21_b0_n65",
+      "target": "s22_b0_n67",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s21_b1_n66",
+      "target": "s22_b1_n68",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s20_b2_n63",
+      "target": "s22_b2_n69",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s22_b1_n68",
+      "target": "s23_b1_n70",
+      "verifier_score": 0.85,
+      "label": "0.85"
+    },
+    {
+      "source": "s22_b0_n67",
+      "target": "s23_b0_n71",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s23_b0_n71",
+      "target": "s23_b0_n72",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s23_b0_n72",
+      "target": "s24_b0_n73",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s23_b1_n70",
+      "target": "s24_b1_n74",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s22_b2_n69",
+      "target": "s24_b2_n75",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s24_b0_n73",
+      "target": "s25_b0_n76",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s25_b0_n76",
+      "target": "s25_b0_n77",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s24_b1_n74",
+      "target": "s25_b1_n78",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s25_b0_n77",
+      "target": "s26_b0_n79",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s25_b1_n78",
+      "target": "s26_b1_n80",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s26_b1_n80",
+      "target": "s26_b1_n81",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s24_b2_n75",
+      "target": "s27_b2_n82",
+      "verifier_score": 0.8,
+      "label": "0.80"
+    },
+    {
+      "source": "s26_b0_n79",
+      "target": "s27_b0_n83",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s26_b1_n81",
+      "target": "s27_b1_n84",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s27_b0_n83",
+      "target": "s28_b0_n85",
+      "verifier_score": 0.95,
+      "label": "0.95"
+    },
+    {
+      "source": "s27_b1_n84",
+      "target": "s28_b1_n86",
+      "verifier_score": 0.8,
+      "label": "0.80"
+    },
+    {
+      "source": "s28_b1_n86",
+      "target": "s28_b1_n87",
+      "verifier_score": 0.8,
+      "label": "0.80"
+    },
+    {
+      "source": "s28_b0_n85",
+      "target": "s29_b0_n88",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s28_b1_n87",
+      "target": "s29_b1_n89",
+      "verifier_score": 0.8,
+      "label": "0.80"
+    },
+    {
+      "source": "s27_b2_n82",
+      "target": "s29_b2_n90",
+      "verifier_score": 0.7,
+      "label": "0.70"
+    },
+    {
+      "source": "s29_b1_n89",
+      "target": "s30_b1_n91",
+      "verifier_score": 0.85,
+      "label": "0.85"
+    },
+    {
+      "source": "s29_b2_n90",
+      "target": "s30_b2_n92",
+      "verifier_score": 0.85,
+      "label": "0.85"
+    },
+    {
+      "source": "s30_b1_n91",
+      "target": "s31_b1_n93",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    },
+    {
+      "source": "s30_b2_n92",
+      "target": "s31_b2_n94",
+      "verifier_score": 0.5,
+      "label": "0.50"
+    }
+  ]
+};
+function scoreColor(s){
+  s=Math.max(0,Math.min(1,s));
+  if(s>=0.5){const t=(s-0.5)*2;return `rgb(${Math.round(255*(1-t))},255,0)`;}
+  const t=s*2;return `rgb(255,${Math.round(255*t)},0)`;
+}
+function fmt(v,dp=4){return typeof v==='number'?v.toFixed(dp):String(v);}
+const nodeById={};
+RAW.nodes.forEach(n=>nodeById[n.id]=n);
+RAW.links.forEach(l=>{l.sourceNode=nodeById[l.source];l.targetNode=nodeById[l.target];});
+const maxStep=Math.max(...RAW.nodes.map(n=>n.step));
+const maxBeam=Math.max(...RAW.nodes.map(n=>n.beam_idx));
+const W=window.innerWidth,H=window.innerHeight-48;
+const svg=d3.select("svg#graph").attr("width",W).attr("height",H);
+svg.append("defs").append("marker")
+  .attr("id","arrow").attr("viewBox","0 -5 10 10")
+  .attr("refX",18).attr("refY",0)
+  .attr("markerWidth",6).attr("markerHeight",6)
+  .attr("orient","auto")
+  .append("path").attr("d","M0,-5L10,0L0,5").attr("fill","#555");
+const g=svg.append("g");
+svg.call(d3.zoom().scaleExtent([0.1,5]).on("zoom",e=>g.attr("transform",e.transform)));
+const PAD_X=140,PAD_Y=100;
+const STEP_W=Math.min(180,(W-PAD_X*2)/Math.max(1,maxStep));
+const BEAM_H=Math.min(120,(H-PAD_Y*2)/Math.max(1,maxBeam+1));
+const posMap={};
+RAW.nodes.forEach(n=>{
+  const key=`${n.step}_${n.beam_idx}`;
+  if(!posMap[key])posMap[key]=[];
+  posMap[key].push(n);
+});
+RAW.nodes.forEach(n=>{
+  const key=`${n.step}_${n.beam_idx}`;
+  const grp=posMap[key];
+  const idx=grp.indexOf(n);
+  n._gx=PAD_X+n.step*STEP_W;
+  n._gy=PAD_Y+n.beam_idx*BEAM_H+(grp.length>1?(idx-(grp.length-1)/2)*18:0);
+});
+const sim=d3.forceSimulation(RAW.nodes)
+  .force("link",d3.forceLink(RAW.links).id(d=>d.id).distance(80).strength(0.3))
+  .force("charge",d3.forceManyBody().strength(-120))
+  .force("x",d3.forceX(n=>n._gx).strength(0.8))
+  .force("y",d3.forceY(n=>n._gy).strength(0.8))
+  .force("collision",d3.forceCollide(18));
+const stepSet=[...new Set(RAW.nodes.map(n=>n.step))].sort((a,b)=>a-b);
+g.selectAll(".step-label").data(stepSet).enter()
+  .append("text").attr("class","step-label")
+  .attr("x",s=>PAD_X+s*STEP_W).attr("y",16)
+  .text(s=>`Step ${s}`);
+const tooltip=document.getElementById("tooltip");
+let linkSel=g.append("g").selectAll(".link").data(RAW.links).enter()
+  .append("line").attr("class","link")
+  .attr("stroke",d=>scoreColor(d.verifier_score))
+  .attr("stroke-width",d=>0.5+d.verifier_score*3);
+let nodeSel=g.append("g").selectAll(".node").data(RAW.nodes).enter()
+  .append("g")
+  .attr("class",d=>"node"+(d.selected?" selected":"")+(d.finished?" finished":""))
+  .call(d3.drag()
+    .on("start",(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+    .on("drag", (e,d)=>{d.fx=e.x;d.fy=e.y;})
+    .on("end",  (e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}))
+  .on("mousemove",(e,d)=>{
+    tooltip.style.display="block";
+    tooltip.style.left=(e.clientX+14)+"px";
+    tooltip.style.top=(e.clientY-10)+"px";
+    tooltip.innerHTML=`
+      <div class="tt-title">Step ${d.step} · Beam ${d.beam_idx}
+        ${d.selected?"✅":""} ${d.finished?"🏁":""}</div>
+      <div class="tt-row"><span class="tt-key">Score</span><span class="tt-val">${fmt(d.score)}</span></div>
+      <div class="tt-row"><span class="tt-key">Verifier</span><span class="tt-val">${fmt(d.verifier)}</span></div>
+      <div class="tt-row"><span class="tt-key">Cumulative</span><span class="tt-val">${fmt(d.cumulative)}</span></div>
+      <div class="tt-row"><span class="tt-key">Lines</span><span class="tt-val">${d.lines}</span></div>
+      <div class="tt-row"><span class="tt-key">Tokens</span><span class="tt-val">${d.tokens}</span></div>
+      <div class="tt-row"><span class="tt-key">Scored steps</span><span class="tt-val">${d.scored_steps}</span></div>
+      <div class="tt-row"><span class="tt-key">Rank</span><span class="tt-val">${d.rank??"—"}</span></div>
+      <div class="tt-line">${d.last_line}</div>`;
+  })
+  .on("mouseleave",()=>{tooltip.style.display="none";});
+nodeSel.append("circle")
+  .attr("r",d=>10+d.score*14)
+  .attr("fill",d=>scoreColor(d.score))
+  .attr("stroke",d=>d.selected?"#58a6ff":"#444")
+  .attr("stroke-dasharray",d=>d.finished?"4 2":"none");
+nodeSel.append("text")
+  .attr("dy","0.35em")
+  .attr("y",d=>-(12+d.score*14))
+  .text(d=>`B${d.beam_idx} ${fmt(d.score,2)}`);
+sim.on("tick",()=>{
+  linkSel.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+         .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+  nodeSel.attr("transform",d=>`translate(${d.x},${d.y})`);
+});
+document.getElementById("layout-select").addEventListener("change",e=>{
+  const useGrid=e.target.value==="grid";
+  sim.force("x").strength(useGrid?0.8:0.1);
+  sim.force("y").strength(useGrid?0.8:0.1);
+  sim.alpha(0.5).restart();
+});
+document.getElementById("link-strength").addEventListener("input",e=>{
+  sim.force("link").strength(+e.target.value);sim.alpha(0.3).restart();
+});
+document.getElementById("show-labels").addEventListener("change",e=>{
+  nodeSel.selectAll("text").style("display",e.target.checked?null:"none");
+});
+document.getElementById("only-selected").addEventListener("change",e=>{
+  const onlySel=e.target.checked;
+  nodeSel.style("display",d=>onlySel&&!d.selected?"none":null);
+  linkSel.style("display",d=>{
+    if(!onlySel)return null;
+    return(d.sourceNode?.selected&&d.targetNode?.selected)?null:"none";
+  });
+});
+document.getElementById("stats").textContent=
+  `${RAW.nodes.length} nodes · ${RAW.links.length} edges · `+
+  `${maxStep+1} steps · ${maxBeam+1} beams`;
+</script>
+</body>
+</html>

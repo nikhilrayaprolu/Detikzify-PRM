@@ -81,6 +81,18 @@ def parse_args():
         help="LaTeX compilation timeout in seconds (default: 60)",
     )
     p.add_argument(
+        "--verifier_type",
+        choices=["baseline", "finetuned"],
+        default="baseline",
+        help="type of verifier to use (default: baseline)",
+    )
+    p.add_argument(
+        "--verifier_checkpoint",
+        type=str,
+        default=None,
+        help="path to the LoRA-finetuned verifier checkpoint (required if verifier_type is 'finetuned')",
+    )
+    p.add_argument(
         "--seed",
         type=int,
         default=0,
@@ -231,6 +243,7 @@ if __name__ == "__main__":
         streamer=streamer,
         compile_timeout=args.compile_timeout,
         metric=args.metric,
+        verifier_checkpoint=args.verifier_checkpoint if args.verifier_type == "finetuned" else None,
     )
 
     try:

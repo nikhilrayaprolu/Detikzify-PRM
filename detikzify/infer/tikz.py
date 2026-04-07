@@ -16,7 +16,7 @@ from ..util import expand, redact as redact_text
 
 logger = logging.get_logger("transformers")
 
-_DEFAULT_SERVER_URL = environ.get("TIKZ_SERVER_URL", "http://10.2.135.88:8070/")
+_DEFAULT_SERVER_URL = environ.get("TIKZ_SERVER_URL", "http://10.2.143.231:8070/")
 
 
 class TikzDocument:

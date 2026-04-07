@@ -1,0 +1,320 @@
+digraph BeamSearch {
+  rankdir=LR;
+  graph [fontname="Helvetica" bgcolor="#1a1a2e"];
+  node  [fontname="Helvetica" fontcolor=white style=filled fontsize=9];
+  edge  [fontname="Helvetica" fontcolor="#aaaaaa" fontsize=7 color="#555555"];
+
+  subgraph cluster_step0 {
+    label="Step 0"; color="#333355"; fontcolor="#aaaaaa";
+    "s0_b0_n1" [label="B0 s0\\nscore=0.000\\n<empty>" fillcolor="#ff0000" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step1 {
+    label="Step 1"; color="#333355"; fontcolor="#aaaaaa";
+    "s1_b0_n2" [label="B0 s1\\nscore=0.000\\n\\\\documentclass[10pt]{article}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s1_b0_n3" [label="B0 s1\\nscore=0.000\\n\\\\documentclass[final,3p,times]{elsa…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s1_b0_n4" [label="B0 s1\\nscore=0.000\\n\\\\documentclass[final,5p,times,twoco…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s1_b1_n5" [label="B1 s1\\nscore=0.000\\n\\\\documentclass[final,3p,times]{elsa…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s1_b2_n6" [label="B2 s1\\nscore=0.000\\n\\\\documentclass[final,5p,times,twoco…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step2 {
+    label="Step 2"; color="#333355"; fontcolor="#aaaaaa";
+    "s2_b0_n7" [label="B0 s2\\nscore=0.000\\n\\\\usepackage{amsmath,amsthm,amssymb,…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s2_b0_n8" [label="B0 s2\\nscore=0.000\\n\\\\usepackage{amsmath}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s2_b1_n9" [label="B1 s2\\nscore=0.000\\n\\\\usepackage{amsmath,amsthm,amscd,am…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step3 {
+    label="Step 3"; color="#333355"; fontcolor="#aaaaaa";
+    "s3_b0_n10" [label="B0 s3\\nscore=0.000\\n\\\\usepackage{tikz}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s3_b1_n11" [label="B1 s3\\nscore=0.000\\n\\\\usepackage{amssymb}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s3_b2_n12" [label="B2 s3\\nscore=0.000\\n\\\\usepackage{tikz}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step4 {
+    label="Step 4"; color="#333355"; fontcolor="#aaaaaa";
+    "s4_b0_n13" [label="B0 s4\\nscore=0.000\\n\\\\begin{document}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s4_b1_n14" [label="B1 s4\\nscore=0.000\\n\\\\usepackage{tikz}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s4_b2_n15" [label="B2 s4\\nscore=0.000\\n\\\\usepackage{tkz-euclide}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step5 {
+    label="Step 5"; color="#333355"; fontcolor="#aaaaaa";
+    "s5_b0_n16" [label="B0 s5\\nscore=0.000\\n\\\\begin{tikzpicture}" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s5_b1_n17" [label="B1 s5\\nscore=0.000\\n\\\\usetikzlibrary{arrows,decorations.…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+    "s5_b1_n18" [label="B1 s5\\nscore=0.000\\n\\\\usetikzlibrary{arrows, automata, d…" fillcolor="#ff0000" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step6 {
+    label="Step 6"; color="#333355"; fontcolor="#aaaaaa";
+    "s6_b0_n19" [label="B0 s6\\nscore=0.600\\n  \\\\draw [fill=green!50] (0,0) recta…" fillcolor="#ccff00" shape=ellipse penwidth=2];
+    "s6_b0_n20" [label="B0 s6\\nscore=0.600\\n  \\\\draw[fill=green!30] (0,0) rectan…" fillcolor="#ccff00" shape=ellipse penwidth=2];
+    "s6_b0_n21" [label="B0 s6\\nscore=0.600\\n  \\\\draw[fill=green!30] (0,0) rectan…" fillcolor="#ccff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step7 {
+    label="Step 7"; color="#333355"; fontcolor="#aaaaaa";
+    "s7_b2_n22" [label="B2 s7\\nscore=0.600\\n  \\\\draw[very thick] (0,0) -- (2,0) …" fillcolor="#ccff00" shape=ellipse penwidth=2];
+    "s7_b2_n23" [label="B2 s7\\nscore=0.600\\n  \\\\draw[very thick] (0,0) -- (2,0) …" fillcolor="#ccff00" shape=ellipse penwidth=2];
+    "s7_b0_n24" [label="B0 s7\\nscore=0.530\\n  \\\\draw [fill=green!50] (2,2.5) -- …" fillcolor="#efff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step8 {
+    label="Step 8"; color="#333355"; fontcolor="#aaaaaa";
+    "s8_b0_n25" [label="B0 s8\\nscore=0.670\\n  \\\\draw (1,1) node {$\\\\textbf{input}…" fillcolor="#a8ff00" shape=ellipse penwidth=2];
+    "s8_b0_n26" [label="B0 s8\\nscore=0.670\\n  \\\\draw (1,1) node {$\\\\mathbf{input}…" fillcolor="#a8ff00" shape=ellipse penwidth=2];
+    "s8_b0_n27" [label="B0 s8\\nscore=0.600\\n  \\\\draw[fill=cyan!30] (3,0) -- (5,0…" fillcolor="#ccff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step9 {
+    label="Step 9"; color="#333355"; fontcolor="#aaaaaa";
+    "s9_b0_n28" [label="B0 s9\\nscore=0.621\\n  \\\\draw[very thick,->] (2.2,1) -- (…" fillcolor="#c1ff00" shape=ellipse penwidth=2];
+    "s9_b0_n29" [label="B0 s9\\nscore=0.621\\n  \\\\draw[->,thick] (2.2,1) -- (3.8,1…" fillcolor="#c1ff00" shape=ellipse penwidth=2];
+    "s9_b0_n30" [label="B0 s9\\nscore=0.621\\n  \\\\draw[very thick,->] (2.2,1) -- (…" fillcolor="#c1ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step10 {
+    label="Step 10"; color="#333355"; fontcolor="#aaaaaa";
+    "s10_b0_n31" [label="B0 s10\\nscore=0.606\\n  \\\\draw (2.85,1.2) node {\\\\tiny{Conv…" fillcolor="#c8ff00" shape=ellipse penwidth=2];
+    "s10_b0_n32" [label="B0 s10\\nscore=0.606\\n  \\\\draw (2.85,1.2) node {\\\\scriptsiz…" fillcolor="#c8ff00" shape=ellipse penwidth=2];
+    "s10_b0_n33" [label="B0 s10\\nscore=0.606\\n  \\\\draw (2.8,1.2) node {\\\\scriptsize…" fillcolor="#c8ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step11 {
+    label="Step 11"; color="#333355"; fontcolor="#aaaaaa";
+    "s11_b1_n34" [label="B1 s11\\nscore=0.672\\n  \\\\draw[fill=cyan!30] (3.7,0) -- (5…" fillcolor="#a7ff00" shape=ellipse penwidth=2];
+    "s11_b0_n35" [label="B0 s11\\nscore=0.602\\n  \\\\draw[fill=cyan!30] (3.7,0) -- (5…" fillcolor="#cbff00" shape=ellipse penwidth=2];
+    "s11_b2_n36" [label="B2 s11\\nscore=0.602\\n  \\\\draw[fill=cyan!30] (3.7,0) -- (5…" fillcolor="#cbff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step12 {
+    label="Step 12"; color="#333355"; fontcolor="#aaaaaa";
+    "s12_b0_n37" [label="B0 s12\\nscore=0.692\\n  \\\\draw[fill=cyan!30] (3.7,2) -- (3…" fillcolor="#9dff00" shape=ellipse penwidth=2];
+    "s12_b1_n38" [label="B1 s12\\nscore=0.601\\n  \\\\draw[fill=cyan!30] (3.7,2) -- (3…" fillcolor="#cbff00" shape=ellipse penwidth=2];
+    "s12_b2_n39" [label="B2 s12\\nscore=0.601\\n  \\\\draw[fill=cyan!30] (3.7,2) -- (3…" fillcolor="#cbff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step13 {
+    label="Step 13"; color="#333355"; fontcolor="#aaaaaa";
+    "s13_b0_n40" [label="B0 s13\\nscore=0.698\\n  \\\\draw[fill=cyan!30] (5.7,2) -- (5…" fillcolor="#9aff00" shape=ellipse penwidth=2];
+    "s13_b0_n41" [label="B0 s13\\nscore=0.627\\n  \\\\draw[very thick] (3.7,2) -- (5.7…" fillcolor="#bdff00" shape=ellipse penwidth=2];
+    "s13_b1_n42" [label="B1 s13\\nscore=0.600\\n  \\\\draw[very thick] (3.7,2) -- (5.7…" fillcolor="#cbff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step14 {
+    label="Step 14"; color="#333355"; fontcolor="#aaaaaa";
+    "s14_b0_n43" [label="B0 s14\\nscore=0.629\\n  \\\\draw[very thick] (3.7,0) -- (5.7…" fillcolor="#bdff00" shape=ellipse penwidth=2];
+    "s14_b1_n44" [label="B1 s14\\nscore=0.608\\n  \\\\draw[very thick,->] (5.9,1) -- (…" fillcolor="#c7ff00" shape=ellipse penwidth=2];
+    "s14_b2_n45" [label="B2 s14\\nscore=0.600\\n  \\\\draw[very thick,->] (5.9,1) -- (…" fillcolor="#cbff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step15 {
+    label="Step 15"; color="#333355"; fontcolor="#aaaaaa";
+    "s15_b0_n46" [label="B0 s15\\nscore=0.679\\n  \\\\draw[very thick] (3.7,2) -- (3.7…" fillcolor="#a3ff00" shape=ellipse penwidth=2];
+    "s15_b2_n47" [label="B2 s15\\nscore=0.670\\n  \\\\draw (6.5,1.2) node {\\\\tiny{Pool}…" fillcolor="#a8ff00" shape=ellipse penwidth=2];
+    "s15_b1_n48" [label="B1 s15\\nscore=0.603\\n  \\\\draw (6.5,1.2) node {\\\\scriptsize…" fillcolor="#caff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step16 {
+    label="Step 16"; color="#333355"; fontcolor="#aaaaaa";
+    "s16_b0_n49" [label="B0 s16\\nscore=0.694\\n  \\\\draw[very thick] (5.7,2) -- (5.7…" fillcolor="#9cff00" shape=ellipse penwidth=2];
+    "s16_b1_n50" [label="B1 s16\\nscore=0.621\\n  \\\\draw[fill=red!30] (7.4,0.5) -- (…" fillcolor="#c1ff00" shape=ellipse penwidth=2];
+    "s16_b2_n51" [label="B2 s16\\nscore=0.601\\n  \\\\draw[fill=red!30] (7.4,0.5) -- (…" fillcolor="#cbff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step17 {
+    label="Step 17"; color="#333355"; fontcolor="#aaaaaa";
+    "s17_b0_n52" [label="B0 s17\\nscore=0.698\\n  \\\\draw[very thick,->] (6.2,1) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s17_b1_n53" [label="B1 s17\\nscore=0.676\\n  \\\\draw[fill=red!30] (7.4,1.5) -- (…" fillcolor="#a5ff00" shape=ellipse penwidth=2];
+    "s17_b2_n54" [label="B2 s17\\nscore=0.670\\n  \\\\draw[fill=red!30] (7.4,1.5) -- (…" fillcolor="#a8ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step18 {
+    label="Step 18"; color="#333355"; fontcolor="#aaaaaa";
+    "s18_b1_n55" [label="B1 s18\\nscore=0.693\\n  \\\\draw[very thick] (7.4,1.5) -- (8…" fillcolor="#9cff00" shape=ellipse penwidth=2];
+    "s18_b2_n56" [label="B2 s18\\nscore=0.691\\n  \\\\draw[very thick] (7.4,1.5) -- (8…" fillcolor="#9dff00" shape=ellipse penwidth=2];
+    "s18_b0_n57" [label="B0 s18\\nscore=0.629\\n  \\\\draw (6.85,1.2) node {\\\\scriptsiz…" fillcolor="#bdff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step19 {
+    label="Step 19"; color="#333355"; fontcolor="#aaaaaa";
+    "s19_b0_n58" [label="B0 s19\\nscore=0.698\\n  \\\\draw[very thick,->] (8.6,1) -- (…" fillcolor="#9aff00" shape=ellipse penwidth=2];
+    "s19_b1_n59" [label="B1 s19\\nscore=0.697\\n  \\\\draw[very thick,->] (8.6,1) -- (…" fillcolor="#9aff00" shape=ellipse penwidth=2];
+    "s19_b2_n60" [label="B2 s19\\nscore=0.679\\n  \\\\draw[fill=red!30] (7.7,1.3) -- (…" fillcolor="#a3ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step20 {
+    label="Step 20"; color="#333355"; fontcolor="#aaaaaa";
+    "s20_b0_n61" [label="B0 s20\\nscore=0.699\\n  \\\\draw (9.2,1.2) node {\\\\tiny{Conv}…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s20_b1_n62" [label="B1 s20\\nscore=0.699\\n  \\\\draw (9.2,1.2) node {\\\\scriptsize…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s20_b2_n63" [label="B2 s20\\nscore=0.694\\n  \\\\draw[fill=red!30] (7.7,1.3) -- (…" fillcolor="#9cff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step21 {
+    label="Step 21"; color="#333355"; fontcolor="#aaaaaa";
+    "s21_b0_n64" [label="B0 s21\\nscore=0.700\\n  \\\\draw[fill=blue!20] (10,0.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s21_b0_n65" [label="B0 s21\\nscore=0.700\\n  \\\\draw[fill=blue!30] (10,0.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s21_b1_n66" [label="B1 s21\\nscore=0.700\\n  \\\\draw[fill=blue!30] (10,0.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step22 {
+    label="Step 22"; color="#333355"; fontcolor="#aaaaaa";
+    "s22_b0_n67" [label="B0 s22\\nscore=0.700\\n  \\\\draw[fill=blue!20] (10,1.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s22_b1_n68" [label="B1 s22\\nscore=0.700\\n  \\\\draw[fill=blue!30] (10,1.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s22_b2_n69" [label="B2 s22\\nscore=0.700\\n  \\\\draw[fill=blue!30] (10,1.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step23 {
+    label="Step 23"; color="#333355"; fontcolor="#aaaaaa";
+    "s23_b1_n70" [label="B1 s23\\nscore=0.805\\n  \\\\draw[fill=blue!30] (11,0.5) -- (…" fillcolor="#63ff00" shape=ellipse penwidth=2];
+    "s23_b0_n71" [label="B0 s23\\nscore=0.700\\n  \\\\draw[fill=blue!10] (11,0.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s23_b0_n72" [label="B0 s23\\nscore=0.700\\n  \\\\draw[very thick] (10,1.5) -- (11…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step24 {
+    label="Step 24"; color="#333355"; fontcolor="#aaaaaa";
+    "s24_b0_n73" [label="B0 s24\\nscore=0.732\\n  \\\\draw[very thick] (10,0.5) -- (11…" fillcolor="#88ff00" shape=ellipse penwidth=2];
+    "s24_b1_n74" [label="B1 s24\\nscore=0.700\\n  \\\\draw[very thick] (10,0.5) -- (11…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+    "s24_b2_n75" [label="B2 s24\\nscore=0.700\\n  \\\\draw[fill=blue!20] (11,0.5) -- (…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step25 {
+    label="Step 25"; color="#333355"; fontcolor="#aaaaaa";
+    "s25_b0_n76" [label="B0 s25\\nscore=0.709\\n  \\\\draw[very thick] (10,1.5) -- (11…" fillcolor="#94ff00" shape=ellipse penwidth=2];
+    "s25_b0_n77" [label="B0 s25\\nscore=0.709\\n  \\\\draw (10.5,1) node {$\\\\vec{o}_1$}…" fillcolor="#94ff00" shape=ellipse penwidth=2];
+    "s25_b1_n78" [label="B1 s25\\nscore=0.700\\n  \\\\draw (10.5,1) node {$\\\\vec{o}_1$}…" fillcolor="#99ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step26 {
+    label="Step 26"; color="#333355"; fontcolor="#aaaaaa";
+    "s26_b0_n79" [label="B0 s26\\nscore=0.703\\n  \\\\draw[very thick] (11,0.5) -- (11…" fillcolor="#97ff00" shape=ellipse penwidth=2];
+    "s26_b1_n80" [label="B1 s26\\nscore=0.703\\n  \\\\draw[very thick,->] (11.1,1) -- …" fillcolor="#97ff00" shape=ellipse penwidth=2];
+    "s26_b1_n81" [label="B1 s26\\nscore=0.703\\n  \\\\draw (10.5,0.75) node {$\\\\vec{o}_…" fillcolor="#97ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step27 {
+    label="Step 27"; color="#333355"; fontcolor="#aaaaaa";
+    "s27_b2_n82" [label="B2 s27\\nscore=0.771\\n  \\\\draw (10.5,1.25) node {$\\\\vec{o}_…" fillcolor="#74ff00" shape=ellipse penwidth=2];
+    "s27_b0_n83" [label="B0 s27\\nscore=0.701\\n  \\\\draw (10.5,1) node {$\\\\hat{o}_1$}…" fillcolor="#98ff00" shape=ellipse penwidth=2];
+    "s27_b1_n84" [label="B1 s27\\nscore=0.701\\n  \\\\draw (11.2,1.2) node {\\\\tiny{Pool…" fillcolor="#98ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step28 {
+    label="Step 28"; color="#333355"; fontcolor="#aaaaaa";
+    "s28_b0_n85" [label="B0 s28\\nscore=0.896\\n\\\\end{tikzpicture}" fillcolor="#34ff00" shape=ellipse penwidth=2];
+    "s28_b1_n86" [label="B1 s28\\nscore=0.770\\n  \\\\draw (10.5,1.5) node {$\\\\hat{o}_2…" fillcolor="#75ff00" shape=ellipse penwidth=2];
+    "s28_b1_n87" [label="B1 s28\\nscore=0.770\\n  \\\\draw (10.5,0.75) node {$\\\\hat{o}_…" fillcolor="#75ff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step29 {
+    label="Step 29"; color="#333355"; fontcolor="#aaaaaa";
+    "s29_b0_n88" [label="B0 s29\\nscore=0.896\\n\\\\end{document}" fillcolor="#34ff00" shape=diamond penwidth=2];
+    "s29_b1_n89" [label="B1 s29\\nscore=0.791\\n  \\\\draw (10.5,0.5) node {$\\\\hat{o}_3…" fillcolor="#6aff00" shape=ellipse penwidth=2];
+    "s29_b2_n90" [label="B2 s29\\nscore=0.721\\n  \\\\draw (10.5,1.25) node {$\\\\hat{o}_…" fillcolor="#8eff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step30 {
+    label="Step 30"; color="#333355"; fontcolor="#aaaaaa";
+    "s30_b1_n91" [label="B1 s30\\nscore=0.896\\n\\\\end{tikzpicture}" fillcolor="#34ff00" shape=diamond penwidth=2];
+    "s30_b2_n92" [label="B2 s30\\nscore=0.791\\n\\\\end{tikzpicture}" fillcolor="#6aff00" shape=ellipse penwidth=2];
+  }
+
+  subgraph cluster_step31 {
+    label="Step 31"; color="#333355"; fontcolor="#aaaaaa";
+    "s31_b1_n93" [label="B1 s31\\nscore=0.896\\n\\\\end{document}" fillcolor="#34ff00" shape=diamond penwidth=2];
+    "s31_b2_n94" [label="B2 s31\\nscore=0.751\\n\\\\end{document}" fillcolor="#7eff00" shape=diamond penwidth=2];
+  }
+
+  "s0_b0_n1" -> "s1_b0_n2" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s1_b0_n2" -> "s1_b0_n3" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s1_b0_n3" -> "s1_b0_n4" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s1_b0_n4" -> "s2_b0_n7" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s2_b0_n7" -> "s2_b0_n8" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s1_b1_n5" -> "s2_b1_n9" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s2_b0_n8" -> "s3_b0_n10" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s2_b1_n9" -> "s3_b1_n11" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s1_b2_n6" -> "s3_b2_n12" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s3_b0_n10" -> "s4_b0_n13" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s3_b1_n11" -> "s4_b1_n14" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s3_b2_n12" -> "s4_b2_n15" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s4_b0_n13" -> "s5_b0_n16" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s4_b1_n14" -> "s5_b1_n17" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s5_b1_n17" -> "s5_b1_n18" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s5_b0_n16" -> "s6_b0_n19" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s6_b0_n19" -> "s6_b0_n20" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s6_b0_n20" -> "s6_b0_n21" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s4_b2_n15" -> "s7_b2_n22" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s7_b2_n22" -> "s7_b2_n23" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s6_b0_n21" -> "s7_b0_n24" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s7_b0_n24" -> "s8_b0_n25" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s8_b0_n25" -> "s8_b0_n26" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s8_b0_n26" -> "s8_b0_n27" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s8_b0_n27" -> "s9_b0_n28" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s9_b0_n28" -> "s9_b0_n29" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s9_b0_n29" -> "s9_b0_n30" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s9_b0_n30" -> "s10_b0_n31" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s10_b0_n31" -> "s10_b0_n32" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s10_b0_n32" -> "s10_b0_n33" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s5_b1_n18" -> "s11_b1_n34" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s10_b0_n33" -> "s11_b0_n35" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s7_b2_n23" -> "s11_b2_n36" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s11_b0_n35" -> "s12_b0_n37" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s11_b1_n34" -> "s12_b1_n38" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s11_b2_n36" -> "s12_b2_n39" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s12_b0_n37" -> "s13_b0_n40" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s13_b0_n40" -> "s13_b0_n41" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s12_b1_n38" -> "s13_b1_n42" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s13_b0_n41" -> "s14_b0_n43" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s13_b1_n42" -> "s14_b1_n44" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s12_b2_n39" -> "s14_b2_n45" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s14_b0_n43" -> "s15_b0_n46" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s14_b2_n45" -> "s15_b2_n47" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s14_b1_n44" -> "s15_b1_n48" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s15_b0_n46" -> "s16_b0_n49" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s15_b1_n48" -> "s16_b1_n50" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s15_b2_n47" -> "s16_b2_n51" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s16_b0_n49" -> "s17_b0_n52" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s16_b1_n50" -> "s17_b1_n53" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s16_b2_n51" -> "s17_b2_n54" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s17_b1_n53" -> "s18_b1_n55" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s17_b2_n54" -> "s18_b2_n56" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s17_b0_n52" -> "s18_b0_n57" [label="0.60" color="#ccff00" penwidth=2.3];
+  "s18_b0_n57" -> "s19_b0_n58" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s18_b1_n55" -> "s19_b1_n59" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s18_b2_n56" -> "s19_b2_n60" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s19_b0_n58" -> "s20_b0_n61" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s19_b1_n59" -> "s20_b1_n62" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s19_b2_n60" -> "s20_b2_n63" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s20_b0_n61" -> "s21_b0_n64" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s21_b0_n64" -> "s21_b0_n65" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s20_b1_n62" -> "s21_b1_n66" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s21_b0_n65" -> "s22_b0_n67" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s21_b1_n66" -> "s22_b1_n68" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s20_b2_n63" -> "s22_b2_n69" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s22_b1_n68" -> "s23_b1_n70" [label="0.85" color="#4cff00" penwidth=3.05];
+  "s22_b0_n67" -> "s23_b0_n71" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s23_b0_n71" -> "s23_b0_n72" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s23_b0_n72" -> "s24_b0_n73" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s23_b1_n70" -> "s24_b1_n74" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s22_b2_n69" -> "s24_b2_n75" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s24_b0_n73" -> "s25_b0_n76" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s25_b0_n76" -> "s25_b0_n77" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s24_b1_n74" -> "s25_b1_n78" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s25_b0_n77" -> "s26_b0_n79" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s25_b1_n78" -> "s26_b1_n80" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s26_b1_n80" -> "s26_b1_n81" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s24_b2_n75" -> "s27_b2_n82" [label="0.80" color="#65ff00" penwidth=2.9];
+  "s26_b0_n79" -> "s27_b0_n83" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s26_b1_n81" -> "s27_b1_n84" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s27_b0_n83" -> "s28_b0_n85" [label="0.95" color="#19ff00" penwidth=3.35];
+  "s27_b1_n84" -> "s28_b1_n86" [label="0.80" color="#65ff00" penwidth=2.9];
+  "s28_b1_n86" -> "s28_b1_n87" [label="0.80" color="#65ff00" penwidth=2.9];
+  "s28_b0_n85" -> "s29_b0_n88" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s28_b1_n87" -> "s29_b1_n89" [label="0.80" color="#65ff00" penwidth=2.9];
+  "s27_b2_n82" -> "s29_b2_n90" [label="0.70" color="#99ff00" penwidth=2.6];
+  "s29_b1_n89" -> "s30_b1_n91" [label="0.85" color="#4cff00" penwidth=3.05];
+  "s29_b2_n90" -> "s30_b2_n92" [label="0.85" color="#4cff00" penwidth=3.05];
+  "s30_b1_n91" -> "s31_b1_n93" [label="0.50" color="#ffff00" penwidth=2.0];
+  "s30_b2_n92" -> "s31_b2_n94" [label="0.50" color="#ffff00" penwidth=2.0];
+}

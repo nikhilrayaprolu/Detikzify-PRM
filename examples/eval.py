@@ -68,6 +68,23 @@ def parse_args():
         required=True,
         help="(multiple) key-value pairs of model names and paths/urls to models and optionally adapters or json files",
     )
+    argument_parser.add_argument(
+        "--verifier_type",
+        choices=["baseline", "finetuned"],
+        default="baseline",
+        help="type of verifier to use (default: baseline)",
+    )
+    argument_parser.add_argument(
+        "--verifier_checkpoint",
+        type=str,
+        default=None,
+        help="path to the LoRA-finetuned verifier checkpoint (required if verifier_type is 'finetuned')",
+    )
+    argument_parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="only produce predictions for 2 samples and then run metrics",
+    )
     return argument_parser.parse_args()
 
 # https://stackoverflow.com/a/54802737
@@ -99,7 +116,7 @@ def generate(pipe, item, model_inputs, strict=False, timeout=None, **tqdm_kwargs
             break
     return [tikzpic for _, tikzpic in sorted(tikzpics, key=itemgetter(0))]
 
-def predict(model_name, base_model, testset, model_inputs="image", adapter_model=None, cache_file=None, timeout=None):
+def predict(model_name, base_model, testset, model_inputs="image", adapter_model=None, cache_file=None, timeout=None, verifier_checkpoint=None):
     predictions, worker_preds = list(), list()
     model, processor = load_model(
         model_name_or_path=base_model,
@@ -110,7 +127,12 @@ def predict(model_name, base_model, testset, model_inputs="image", adapter_model
     if adapter_model is not None:
         model, processor = adapter.load(model, processor, adapter_model)
     # if we don't have a timeout (i.e., only run mcts until we obtain smth compileable), we can use fast metrics
-    pipe = DetikzifyPipeline(model=model, processor=processor, metric="model" if timeout else "fast")
+    pipe = DetikzifyPipeline(
+        model=model, 
+        processor=processor, 
+        metric="model" if timeout else "fast",
+        verifier_checkpoint=verifier_checkpoint
+    )
 
     if cache_file and isfile(cache_file):
         with open(cache_file) as f:
@@ -131,11 +153,12 @@ def predict(model_name, base_model, testset, model_inputs="image", adapter_model
     return predictions
 
 def load_metrics(measure_throughput=False, **kwargs):
+    subset_size = kwargs.pop("subset_size", 50)
     eed = TexEditDistance(**kwargs)
     clip = ClipScore(**kwargs)
     imgsim = ImageSim(**kwargs)
     dreamsim = DreamSim(**kwargs)
-    kid = KernelInceptionDistance(**kwargs)
+    kid = KernelInceptionDistance(subset_size=subset_size, **kwargs)
 
     def mean_token_efficiency(predictions, limit=0.05):
         samples = list()
@@ -192,6 +215,11 @@ if __name__ == "__main__":
     args = parse_args()
 
     testset = load_dataset("parquet", data_files={"test": args.testset}, split="test").sort("caption") # type: ignore
+    testset = testset.filter(lambda x: x["code"] is not None and x["code"].count("\n") + 1 < 50)
+    if args.debug:
+        testset = testset.select(range(min(2, len(testset))))
+    if RANK == 0:
+        print(f"Number of rows with < 50 lines: {len(testset)}")
 
     predictions = defaultdict(list)
     for model_name, path in map(lambda s: s.split('='), tqdm(args.path, desc="Predicting")):
@@ -208,11 +236,16 @@ if __name__ == "__main__":
                 testset=testset,
                 cache_file=cache_file,
                 timeout=args.timeout,
+                verifier_checkpoint=args.verifier_checkpoint if args.verifier_type == "finetuned" else None,
             )
 
     if RANK == 0: # Scoring only on main process
         scores = dict()
-        metrics = load_metrics(measure_throughput=args.timeout is not None, sync_on_compute=False) # type: ignore
+        metrics = load_metrics(
+            measure_throughput=args.timeout is not None, 
+            sync_on_compute=False,
+            subset_size=max(1, min(50, len(testset) - 1))
+        ) # type: ignore
         for model_name, prediction in tqdm(predictions.items(), desc="Computing metrics", total=len(predictions)):
             scores[model_name] = metrics(
                 references=testset,

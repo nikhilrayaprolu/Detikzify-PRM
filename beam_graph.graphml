@@ -1,0 +1,1799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/graphml"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/graphml
+         http://graphml.graphdrawing.org/graphml/1.0/graphml.xsd">
+
+  <key id="n_label"        for="node" attr.name="label"        attr.type="string"/>
+  <key id="n_step"         for="node" attr.name="step"         attr.type="int"/>
+  <key id="n_beam"         for="node" attr.name="beam_idx"     attr.type="int"/>
+  <key id="n_score"        for="node" attr.name="score"        attr.type="double"/>
+  <key id="n_verifier"     for="node" attr.name="verifier"     attr.type="double"/>
+  <key id="n_cumulative"   for="node" attr.name="cumulative"   attr.type="double"/>
+  <key id="n_lines"        for="node" attr.name="lines"        attr.type="int"/>
+  <key id="n_tokens"       for="node" attr.name="tokens"       attr.type="int"/>
+  <key id="n_scored_steps" for="node" attr.name="scored_steps" attr.type="int"/>
+  <key id="n_last_line"    for="node" attr.name="last_line"    attr.type="string"/>
+  <key id="n_finished"     for="node" attr.name="finished"     attr.type="boolean"/>
+  <key id="n_selected"     for="node" attr.name="selected"     attr.type="boolean"/>
+  <key id="n_rank"         for="node" attr.name="rank"         attr.type="int"/>
+  <key id="e_label"        for="edge" attr.name="label"        attr.type="string"/>
+  <key id="e_verifier"     for="edge" attr.name="verifier_score" attr.type="double"/>
+
+  <graph id="BeamSearch" edgedefault="directed">
+    <node id="s0_b0_n1">
+      <data key="n_label">[0:0] &lt;empty&gt;</data>
+      <data key="n_step">0</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.0</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">0</data>
+      <data key="n_tokens">300</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">&lt;empty&gt;</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">-1</data>
+    </node>
+    <node id="s1_b0_n2">
+      <data key="n_label">[1:0] \documentclass[10pt]{article}</data>
+      <data key="n_step">1</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">1</data>
+      <data key="n_tokens">309</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\documentclass[10pt]{article}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s1_b0_n3">
+      <data key="n_label">[1:0] \documentclass[final,3p,times]{elsarticl…</data>
+      <data key="n_step">1</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">1</data>
+      <data key="n_tokens">314</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\documentclass[final,3p,times]{elsarticle}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s1_b0_n4">
+      <data key="n_label">[1:0] \documentclass[final,5p,times,twocolumn]…</data>
+      <data key="n_step">1</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">1</data>
+      <data key="n_tokens">318</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\documentclass[final,5p,times,twocolumn]{elsarticle}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s1_b1_n5">
+      <data key="n_label">[1:1] \documentclass[final,3p,times]{elsarticl…</data>
+      <data key="n_step">1</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.0</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">1</data>
+      <data key="n_tokens">314</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\documentclass[final,3p,times]{elsarticle}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">-1</data>
+    </node>
+    <node id="s1_b2_n6">
+      <data key="n_label">[1:2] \documentclass[final,5p,times,twocolumn]…</data>
+      <data key="n_step">1</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.0</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">1</data>
+      <data key="n_tokens">318</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\documentclass[final,5p,times,twocolumn]{elsarticle}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">-1</data>
+    </node>
+    <node id="s2_b0_n7">
+      <data key="n_label">[2:0] \usepackage{amsmath,amsthm,amssymb,latex…</data>
+      <data key="n_step">2</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">2</data>
+      <data key="n_tokens">334</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{amsmath,amsthm,amssymb,latexsym,amscd,xcolor}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s2_b0_n8">
+      <data key="n_label">[2:0] \usepackage{amsmath}</data>
+      <data key="n_step">2</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">2</data>
+      <data key="n_tokens">317</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{amsmath}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s2_b1_n9">
+      <data key="n_label">[2:1] \usepackage{amsmath,amsthm,amscd,amsfont…</data>
+      <data key="n_step">2</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">2</data>
+      <data key="n_tokens">351</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{amsmath,amsthm,amscd,amsfonts,amssymb,epic,eepic,bbm,graphicx,ytable...</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s3_b0_n10">
+      <data key="n_label">[3:0] \usepackage{tikz}</data>
+      <data key="n_step">3</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">3</data>
+      <data key="n_tokens">341</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{tikz}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s3_b1_n11">
+      <data key="n_label">[3:1] \usepackage{amssymb}</data>
+      <data key="n_step">3</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">3</data>
+      <data key="n_tokens">325</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{amssymb}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s3_b2_n12">
+      <data key="n_label">[3:2] \usepackage{tikz}</data>
+      <data key="n_step">3</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">3</data>
+      <data key="n_tokens">358</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{tikz}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s4_b0_n13">
+      <data key="n_label">[4:0] \begin{document}</data>
+      <data key="n_step">4</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">4</data>
+      <data key="n_tokens">346</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\begin{document}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s4_b1_n14">
+      <data key="n_label">[4:1] \usepackage{tikz}</data>
+      <data key="n_step">4</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">4</data>
+      <data key="n_tokens">332</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{tikz}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s4_b2_n15">
+      <data key="n_label">[4:2] \usepackage{tkz-euclide}</data>
+      <data key="n_step">4</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">4</data>
+      <data key="n_tokens">368</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usepackage{tkz-euclide}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s5_b0_n16">
+      <data key="n_label">[5:0] \begin{tikzpicture}</data>
+      <data key="n_step">5</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">5</data>
+      <data key="n_tokens">353</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\begin{tikzpicture}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s5_b1_n17">
+      <data key="n_label">[5:1] \usetikzlibrary{arrows,decorations.pathm…</data>
+      <data key="n_step">5</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">5</data>
+      <data key="n_tokens">361</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petr...</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s5_b1_n18">
+      <data key="n_label">[5:1] \usetikzlibrary{arrows, automata, decora…</data>
+      <data key="n_step">5</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.0</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.0</data>
+      <data key="n_lines">5</data>
+      <data key="n_tokens">357</data>
+      <data key="n_scored_steps">0</data>
+      <data key="n_last_line">\usetikzlibrary{arrows, automata, decorations.pathreplacing, fit, matrix, patter...</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s6_b0_n19">
+      <data key="n_label">[6:0]   \draw [fill=green!50] (0,0) rectangle …</data>
+      <data key="n_step">6</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6</data>
+      <data key="n_lines">6</data>
+      <data key="n_tokens">376</data>
+      <data key="n_scored_steps">1</data>
+      <data key="n_last_line">  \draw [fill=green!50] (0,0) rectangle (2,2.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s6_b0_n20">
+      <data key="n_label">[6:0]   \draw[fill=green!30] (0,0) rectangle (…</data>
+      <data key="n_step">6</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6</data>
+      <data key="n_lines">6</data>
+      <data key="n_tokens">376</data>
+      <data key="n_scored_steps">1</data>
+      <data key="n_last_line">  \draw[fill=green!30] (0,0) rectangle (2,2.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s6_b0_n21">
+      <data key="n_label">[6:0]   \draw[fill=green!30] (0,0) rectangle (…</data>
+      <data key="n_step">6</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6</data>
+      <data key="n_lines">6</data>
+      <data key="n_tokens">374</data>
+      <data key="n_scored_steps">1</data>
+      <data key="n_last_line">  \draw[fill=green!30] (0,0) rectangle (2,2);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s7_b2_n22">
+      <data key="n_label">[7:2]   \draw[very thick] (0,0) -- (2,0) -- (2…</data>
+      <data key="n_step">7</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6</data>
+      <data key="n_lines">7</data>
+      <data key="n_tokens">410</data>
+      <data key="n_scored_steps">2</data>
+      <data key="n_last_line">  \draw[very thick] (0,0) -- (2,0) -- (2,2) -- (0,2) -- (0,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s7_b2_n23">
+      <data key="n_label">[7:2]   \draw[very thick] (0,0) -- (2,0) -- (2…</data>
+      <data key="n_step">7</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6</data>
+      <data key="n_lines">7</data>
+      <data key="n_tokens">407</data>
+      <data key="n_scored_steps">2</data>
+      <data key="n_last_line">  \draw[very thick] (0,0) -- (2,0) -- (2,2) -- (0,2) -- cycle;</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s7_b0_n24">
+      <data key="n_label">[7:0]   \draw [fill=green!50] (2,2.5) -- (2.2,…</data>
+      <data key="n_step">7</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.53</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.53</data>
+      <data key="n_lines">7</data>
+      <data key="n_tokens">429</data>
+      <data key="n_scored_steps">2</data>
+      <data key="n_last_line">  \draw [fill=green!50] (2,2.5) -- (2.2,2.7) -- (4.2,2.7) -- (4.2,0.7) -- (2,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s8_b0_n25">
+      <data key="n_label">[8:0]   \draw (1,1) node {$\textbf{input}$};</data>
+      <data key="n_step">8</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.67</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.67</data>
+      <data key="n_lines">8</data>
+      <data key="n_tokens">427</data>
+      <data key="n_scored_steps">3</data>
+      <data key="n_last_line">  \draw (1,1) node {$\textbf{input}$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s8_b0_n26">
+      <data key="n_label">[8:0]   \draw (1,1) node {$\mathbf{input}$};</data>
+      <data key="n_step">8</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.67</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.67</data>
+      <data key="n_lines">8</data>
+      <data key="n_tokens">427</data>
+      <data key="n_scored_steps">3</data>
+      <data key="n_last_line">  \draw (1,1) node {$\mathbf{input}$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s8_b0_n27">
+      <data key="n_label">[8:0]   \draw[fill=cyan!30] (3,0) -- (5,0) -- …</data>
+      <data key="n_step">8</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6</data>
+      <data key="n_lines">8</data>
+      <data key="n_tokens">449</data>
+      <data key="n_scored_steps">3</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (3,0) -- (5,0) -- (5,2) -- (3,2) -- (3,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s9_b0_n28">
+      <data key="n_label">[9:0]   \draw[very thick,-&gt;] (2.2,1) -- (3.5,1…</data>
+      <data key="n_step">9</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.621</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.621</data>
+      <data key="n_lines">9</data>
+      <data key="n_tokens">451</data>
+      <data key="n_scored_steps">4</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (2.2,1) -- (3.5,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s9_b0_n29">
+      <data key="n_label">[9:0]   \draw[-&gt;,thick] (2.2,1) -- (3.8,1);</data>
+      <data key="n_step">9</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.621</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.621</data>
+      <data key="n_lines">9</data>
+      <data key="n_tokens">451</data>
+      <data key="n_scored_steps">4</data>
+      <data key="n_last_line">  \draw[-&gt;,thick] (2.2,1) -- (3.8,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s9_b0_n30">
+      <data key="n_label">[9:0]   \draw[very thick,-&gt;] (2.2,1) -- (3.8,1…</data>
+      <data key="n_step">9</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.621</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.621</data>
+      <data key="n_lines">9</data>
+      <data key="n_tokens">451</data>
+      <data key="n_scored_steps">4</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (2.2,1) -- (3.8,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s10_b0_n31">
+      <data key="n_label">[10:0]   \draw (2.85,1.2) node {\tiny{Conv}};</data>
+      <data key="n_step">10</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6063</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6063</data>
+      <data key="n_lines">10</data>
+      <data key="n_tokens">469</data>
+      <data key="n_scored_steps">5</data>
+      <data key="n_last_line">  \draw (2.85,1.2) node {\tiny{Conv}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s10_b0_n32">
+      <data key="n_label">[10:0]   \draw (2.85,1.2) node {\scriptsize{Con…</data>
+      <data key="n_step">10</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6063</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6063</data>
+      <data key="n_lines">10</data>
+      <data key="n_tokens">470</data>
+      <data key="n_scored_steps">5</data>
+      <data key="n_last_line">  \draw (2.85,1.2) node {\scriptsize{Conv}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s10_b0_n33">
+      <data key="n_label">[10:0]   \draw (2.8,1.2) node {\scriptsize{Conv…</data>
+      <data key="n_step">10</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6063</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6063</data>
+      <data key="n_lines">10</data>
+      <data key="n_tokens">470</data>
+      <data key="n_scored_steps">5</data>
+      <data key="n_last_line">  \draw (2.8,1.2) node {\scriptsize{Conv}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s11_b1_n34">
+      <data key="n_label">[11:1]   \draw[fill=cyan!30] (3.7,0) -- (5.7,0)…</data>
+      <data key="n_step">11</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6719</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6719</data>
+      <data key="n_lines">11</data>
+      <data key="n_tokens">519</data>
+      <data key="n_scored_steps">6</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s11_b0_n35">
+      <data key="n_label">[11:0]   \draw[fill=cyan!30] (3.7,0) -- (5.7,0)…</data>
+      <data key="n_step">11</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6019</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6019</data>
+      <data key="n_lines">11</data>
+      <data key="n_tokens">518</data>
+      <data key="n_scored_steps">6</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s11_b2_n36">
+      <data key="n_label">[11:2]   \draw[fill=cyan!30] (3.7,0) -- (5.7,0)…</data>
+      <data key="n_step">11</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6019</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6019</data>
+      <data key="n_lines">11</data>
+      <data key="n_tokens">519</data>
+      <data key="n_scored_steps">6</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s12_b0_n37">
+      <data key="n_label">[12:0]   \draw[fill=cyan!30] (3.7,2) -- (3.7+0.…</data>
+      <data key="n_step">12</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6916</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6916</data>
+      <data key="n_lines">12</data>
+      <data key="n_tokens">576</data>
+      <data key="n_scored_steps">7</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s12_b1_n38">
+      <data key="n_label">[12:1]   \draw[fill=cyan!30] (3.7,2) -- (3.7+0.…</data>
+      <data key="n_step">12</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6006</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6006</data>
+      <data key="n_lines">12</data>
+      <data key="n_tokens">575</data>
+      <data key="n_scored_steps">7</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s12_b2_n39">
+      <data key="n_label">[12:2]   \draw[fill=cyan!30] (3.7,2) -- (3.7+0.…</data>
+      <data key="n_step">12</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6006</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6006</data>
+      <data key="n_lines">12</data>
+      <data key="n_tokens">576</data>
+      <data key="n_scored_steps">7</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s13_b0_n40">
+      <data key="n_label">[13:0]   \draw[fill=cyan!30] (5.7,2) -- (5.7+0.…</data>
+      <data key="n_step">13</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6975</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6975</data>
+      <data key="n_lines">13</data>
+      <data key="n_tokens">631</data>
+      <data key="n_scored_steps">8</data>
+      <data key="n_last_line">  \draw[fill=cyan!30] (5.7,2) -- (5.7+0.5,2+0.5) -- (5.7+0.5,0.5) -- (5.7,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s13_b0_n41">
+      <data key="n_label">[13:0]   \draw[very thick] (3.7,2) -- (5.7,2) -…</data>
+      <data key="n_step">13</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6275</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6275</data>
+      <data key="n_lines">13</data>
+      <data key="n_tokens">622</data>
+      <data key="n_scored_steps">8</data>
+      <data key="n_last_line">  \draw[very thick] (3.7,2) -- (5.7,2) -- (5.7,0) -- (3.7,0) -- (3.7,2);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s13_b1_n42">
+      <data key="n_label">[13:1]   \draw[very thick] (3.7,2) -- (5.7,2) -…</data>
+      <data key="n_step">13</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6002</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6002</data>
+      <data key="n_lines">13</data>
+      <data key="n_tokens">621</data>
+      <data key="n_scored_steps">8</data>
+      <data key="n_last_line">  \draw[very thick] (3.7,2) -- (5.7,2) -- (5.7,0) -- (3.7,0) -- (3.7,2);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s14_b0_n43">
+      <data key="n_label">[14:0]   \draw[very thick] (3.7,0) -- (5.7,0) -…</data>
+      <data key="n_step">14</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6292</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6292</data>
+      <data key="n_lines">14</data>
+      <data key="n_tokens">677</data>
+      <data key="n_scored_steps">9</data>
+      <data key="n_last_line">  \draw[very thick] (3.7,0) -- (5.7,0) -- (5.7,2) -- (3.7,2) -- (3.7,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s14_b1_n44">
+      <data key="n_label">[14:1]   \draw[very thick,-&gt;] (5.9,1) -- (7.2,1…</data>
+      <data key="n_step">14</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6082</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6082</data>
+      <data key="n_lines">14</data>
+      <data key="n_tokens">646</data>
+      <data key="n_scored_steps">9</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (5.9,1) -- (7.2,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s14_b2_n45">
+      <data key="n_label">[14:2]   \draw[very thick,-&gt;] (5.9,1) -- (7.2,1…</data>
+      <data key="n_step">14</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6001</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6001</data>
+      <data key="n_lines">14</data>
+      <data key="n_tokens">645</data>
+      <data key="n_scored_steps">9</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (5.9,1) -- (7.2,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s15_b0_n46">
+      <data key="n_label">[15:0]   \draw[very thick] (3.7,2) -- (3.7+0.5,…</data>
+      <data key="n_step">15</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6788</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6788</data>
+      <data key="n_lines">15</data>
+      <data key="n_tokens">731</data>
+      <data key="n_scored_steps">10</data>
+      <data key="n_last_line">  \draw[very thick] (3.7,2) -- (3.7+0.5,2+0.5) -- (5.7+0.5,2+0.5) -- (5.7,2);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s15_b2_n47">
+      <data key="n_label">[15:2]   \draw (6.5,1.2) node {\tiny{Pool}};</data>
+      <data key="n_step">15</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.67</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.67</data>
+      <data key="n_lines">15</data>
+      <data key="n_tokens">663</data>
+      <data key="n_scored_steps">10</data>
+      <data key="n_last_line">  \draw (6.5,1.2) node {\tiny{Pool}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s15_b1_n48">
+      <data key="n_label">[15:1]   \draw (6.5,1.2) node {\scriptsize{Pool…</data>
+      <data key="n_step">15</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6025</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6025</data>
+      <data key="n_lines">15</data>
+      <data key="n_tokens">665</data>
+      <data key="n_scored_steps">10</data>
+      <data key="n_last_line">  \draw (6.5,1.2) node {\scriptsize{Pool}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s16_b0_n49">
+      <data key="n_label">[16:0]   \draw[very thick] (5.7,2) -- (5.7+0.5,…</data>
+      <data key="n_step">16</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6936</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6936</data>
+      <data key="n_lines">16</data>
+      <data key="n_tokens">783</data>
+      <data key="n_scored_steps">11</data>
+      <data key="n_last_line">  \draw[very thick] (5.7,2) -- (5.7+0.5,2+0.5) -- (5.7+0.5,0.5) -- (5.7,0);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s16_b1_n50">
+      <data key="n_label">[16:1]   \draw[fill=red!30] (7.4,0.5) -- (8.4,0…</data>
+      <data key="n_step">16</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.621</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.621</data>
+      <data key="n_lines">16</data>
+      <data key="n_tokens">722</data>
+      <data key="n_scored_steps">11</data>
+      <data key="n_last_line">  \draw[fill=red!30] (7.4,0.5) -- (8.4,0.5) -- (8.4,1.5) -- (7.4,1.5) -- (7.4,0....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s16_b2_n51">
+      <data key="n_label">[16:2]   \draw[fill=red!30] (7.4,0.5) -- (8.4,0…</data>
+      <data key="n_step">16</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6007</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6007</data>
+      <data key="n_lines">16</data>
+      <data key="n_tokens">724</data>
+      <data key="n_scored_steps">11</data>
+      <data key="n_last_line">  \draw[fill=red!30] (7.4,0.5) -- (8.4,0.5) -- (8.4,1.5) -- (7.4,1.5) -- (7.4,0....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s17_b0_n52">
+      <data key="n_label">[17:0]   \draw[very thick,-&gt;] (6.2,1) -- (7.5,1…</data>
+      <data key="n_step">17</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6981</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6981</data>
+      <data key="n_lines">17</data>
+      <data key="n_tokens">807</data>
+      <data key="n_scored_steps">12</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (6.2,1) -- (7.5,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s17_b1_n53">
+      <data key="n_label">[17:1]   \draw[fill=red!30] (7.4,1.5) -- (7.4+0…</data>
+      <data key="n_step">17</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6763</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6763</data>
+      <data key="n_lines">17</data>
+      <data key="n_tokens">787</data>
+      <data key="n_scored_steps">12</data>
+      <data key="n_last_line">  \draw[fill=red!30] (7.4,1.5) -- (7.4+0.5,1.5+0.5) -- (8.4+0.5,1.5+0.5) -- (8.4...</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s17_b2_n54">
+      <data key="n_label">[17:2]   \draw[fill=red!30] (7.4,1.5) -- (7.4+0…</data>
+      <data key="n_step">17</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6702</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6702</data>
+      <data key="n_lines">17</data>
+      <data key="n_tokens">789</data>
+      <data key="n_scored_steps">12</data>
+      <data key="n_last_line">  \draw[fill=red!30] (7.4,1.5) -- (7.4+0.5,1.5+0.5) -- (8.4+0.5,1.5+0.5) -- (8.4...</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s18_b1_n55">
+      <data key="n_label">[18:1]   \draw[very thick] (7.4,1.5) -- (8.4,1.…</data>
+      <data key="n_step">18</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6929</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6929</data>
+      <data key="n_lines">18</data>
+      <data key="n_tokens">843</data>
+      <data key="n_scored_steps">13</data>
+      <data key="n_last_line">  \draw[very thick] (7.4,1.5) -- (8.4,1.5) -- (8.4,0.5) -- (7.4,0.5) -- (7.4,1.5...</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s18_b2_n56">
+      <data key="n_label">[18:2]   \draw[very thick] (7.4,1.5) -- (8.4,1.…</data>
+      <data key="n_step">18</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6911</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6911</data>
+      <data key="n_lines">18</data>
+      <data key="n_tokens">845</data>
+      <data key="n_scored_steps">13</data>
+      <data key="n_last_line">  \draw[very thick] (7.4,1.5) -- (8.4,1.5) -- (8.4,0.5) -- (7.4,0.5) -- (7.4,1.5...</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s18_b0_n57">
+      <data key="n_label">[18:0]   \draw (6.85,1.2) node {\scriptsize{Poo…</data>
+      <data key="n_step">18</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6294</data>
+      <data key="n_verifier">0.6</data>
+      <data key="n_cumulative">0.6294</data>
+      <data key="n_lines">18</data>
+      <data key="n_tokens">826</data>
+      <data key="n_scored_steps">13</data>
+      <data key="n_last_line">  \draw (6.85,1.2) node {\scriptsize{Pool}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s19_b0_n58">
+      <data key="n_label">[19:0]   \draw[very thick,-&gt;] (8.6,1) -- (9.9,1…</data>
+      <data key="n_step">19</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6979</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6979</data>
+      <data key="n_lines">19</data>
+      <data key="n_tokens">867</data>
+      <data key="n_scored_steps">14</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (8.6,1) -- (9.9,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s19_b1_n59">
+      <data key="n_label">[19:1]   \draw[very thick,-&gt;] (8.6,1) -- (9.9,1…</data>
+      <data key="n_step">19</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6973</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6973</data>
+      <data key="n_lines">19</data>
+      <data key="n_tokens">869</data>
+      <data key="n_scored_steps">14</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (8.6,1) -- (9.9,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s19_b2_n60">
+      <data key="n_label">[19:2]   \draw[fill=red!30] (7.7,1.3) -- (8.7,1…</data>
+      <data key="n_step">19</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6788</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6788</data>
+      <data key="n_lines">19</data>
+      <data key="n_tokens">885</data>
+      <data key="n_scored_steps">14</data>
+      <data key="n_last_line">  \draw[fill=red!30] (7.7,1.3) -- (8.7,1.3) -- (8.7,0.3) -- (7.7,0.3) -- (7.7,1....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s20_b0_n61">
+      <data key="n_label">[20:0]   \draw (9.2,1.2) node {\tiny{Conv}};</data>
+      <data key="n_step">20</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6994</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6994</data>
+      <data key="n_lines">20</data>
+      <data key="n_tokens">885</data>
+      <data key="n_scored_steps">15</data>
+      <data key="n_last_line">  \draw (9.2,1.2) node {\tiny{Conv}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s20_b1_n62">
+      <data key="n_label">[20:1]   \draw (9.2,1.2) node {\scriptsize{Conv…</data>
+      <data key="n_step">20</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6992</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6992</data>
+      <data key="n_lines">20</data>
+      <data key="n_tokens">888</data>
+      <data key="n_scored_steps">15</data>
+      <data key="n_last_line">  \draw (9.2,1.2) node {\scriptsize{Conv}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s20_b2_n63">
+      <data key="n_label">[20:2]   \draw[fill=red!30] (7.7,1.3) -- (7.7+0…</data>
+      <data key="n_step">20</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6936</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6936</data>
+      <data key="n_lines">20</data>
+      <data key="n_tokens">942</data>
+      <data key="n_scored_steps">15</data>
+      <data key="n_last_line">  \draw[fill=red!30] (7.7,1.3) -- (7.7+0.5,1.8) -- (8.7+0.5,1.8) -- (8.7,1.3);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s21_b0_n64">
+      <data key="n_label">[21:0]   \draw[fill=blue!20] (10,0.5) -- (11,0.…</data>
+      <data key="n_step">21</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6998</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6998</data>
+      <data key="n_lines">21</data>
+      <data key="n_tokens">934</data>
+      <data key="n_scored_steps">16</data>
+      <data key="n_last_line">  \draw[fill=blue!20] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s21_b0_n65">
+      <data key="n_label">[21:0]   \draw[fill=blue!30] (10,0.5) -- (11,0.…</data>
+      <data key="n_step">21</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6998</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6998</data>
+      <data key="n_lines">21</data>
+      <data key="n_tokens">934</data>
+      <data key="n_scored_steps">16</data>
+      <data key="n_last_line">  \draw[fill=blue!30] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s21_b1_n66">
+      <data key="n_label">[21:1]   \draw[fill=blue!30] (10,0.5) -- (11,0.…</data>
+      <data key="n_step">21</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6998</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6998</data>
+      <data key="n_lines">21</data>
+      <data key="n_tokens">937</data>
+      <data key="n_scored_steps">16</data>
+      <data key="n_last_line">  \draw[fill=blue!30] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s22_b0_n67">
+      <data key="n_label">[22:0]   \draw[fill=blue!20] (10,1.5) -- (10+0.…</data>
+      <data key="n_step">22</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.6999</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6999</data>
+      <data key="n_lines">22</data>
+      <data key="n_tokens">991</data>
+      <data key="n_scored_steps">17</data>
+      <data key="n_last_line">  \draw[fill=blue!20] (10,1.5) -- (10+0.5,1.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s22_b1_n68">
+      <data key="n_label">[22:1]   \draw[fill=blue!30] (10,1.5) -- (10+0.…</data>
+      <data key="n_step">22</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.6999</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6999</data>
+      <data key="n_lines">22</data>
+      <data key="n_tokens">991</data>
+      <data key="n_scored_steps">17</data>
+      <data key="n_last_line">  \draw[fill=blue!30] (10,1.5) -- (10+0.5,1.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s22_b2_n69">
+      <data key="n_label">[22:2]   \draw[fill=blue!30] (10,1.5) -- (10+0.…</data>
+      <data key="n_step">22</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.6999</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.6999</data>
+      <data key="n_lines">22</data>
+      <data key="n_tokens">994</data>
+      <data key="n_scored_steps">17</data>
+      <data key="n_last_line">  \draw[fill=blue!30] (10,1.5) -- (10+0.5,1.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s23_b1_n70">
+      <data key="n_label">[23:1]   \draw[fill=blue!30] (11,0.5) -- (11+0.…</data>
+      <data key="n_step">23</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.805</data>
+      <data key="n_verifier">0.85</data>
+      <data key="n_cumulative">0.805</data>
+      <data key="n_lines">23</data>
+      <data key="n_tokens">1048</data>
+      <data key="n_scored_steps">18</data>
+      <data key="n_last_line">  \draw[fill=blue!30] (11,0.5) -- (11+0.5,0.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s23_b0_n71">
+      <data key="n_label">[23:0]   \draw[fill=blue!10] (11,0.5) -- (11+0.…</data>
+      <data key="n_step">23</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.7</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7</data>
+      <data key="n_lines">23</data>
+      <data key="n_tokens">1048</data>
+      <data key="n_scored_steps">18</data>
+      <data key="n_last_line">  \draw[fill=blue!10] (11,0.5) -- (11+0.5,0.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s23_b0_n72">
+      <data key="n_label">[23:0]   \draw[very thick] (10,1.5) -- (11,1.5)…</data>
+      <data key="n_step">23</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.7</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7</data>
+      <data key="n_lines">23</data>
+      <data key="n_tokens">1037</data>
+      <data key="n_scored_steps">18</data>
+      <data key="n_last_line">  \draw[very thick] (10,1.5) -- (11,1.5) -- (11,0.5) -- (10,0.5) -- (10,1.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s24_b0_n73">
+      <data key="n_label">[24:0]   \draw[very thick] (10,0.5) -- (11,0.5)…</data>
+      <data key="n_step">24</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.7315</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7315</data>
+      <data key="n_lines">24</data>
+      <data key="n_tokens">1094</data>
+      <data key="n_scored_steps">19</data>
+      <data key="n_last_line">  \draw[very thick] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s24_b1_n74">
+      <data key="n_label">[24:1]   \draw[very thick] (10,0.5) -- (11,0.5)…</data>
+      <data key="n_step">24</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7</data>
+      <data key="n_lines">24</data>
+      <data key="n_tokens">1094</data>
+      <data key="n_scored_steps">19</data>
+      <data key="n_last_line">  \draw[very thick] (10,0.5) -- (11,0.5) -- (11,1.5) -- (10,1.5) -- (10,0.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s24_b2_n75">
+      <data key="n_label">[24:2]   \draw[fill=blue!20] (11,0.5) -- (11+0.…</data>
+      <data key="n_step">24</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.7</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7</data>
+      <data key="n_lines">24</data>
+      <data key="n_tokens">1094</data>
+      <data key="n_scored_steps">19</data>
+      <data key="n_last_line">  \draw[fill=blue!20] (11,0.5) -- (11+0.5,0.5+0.5) -- (11+0.5,1.5+0.5) -- (11,1....</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s25_b0_n76">
+      <data key="n_label">[25:0]   \draw[very thick] (10,1.5) -- (11+0.5,…</data>
+      <data key="n_step">25</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.7094</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7094</data>
+      <data key="n_lines">25</data>
+      <data key="n_tokens">1124</data>
+      <data key="n_scored_steps">20</data>
+      <data key="n_last_line">  \draw[very thick] (10,1.5) -- (11+0.5,1.5+0.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s25_b0_n77">
+      <data key="n_label">[25:0]   \draw (10.5,1) node {$\vec{o}_1$};</data>
+      <data key="n_step">25</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.7094</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7094</data>
+      <data key="n_lines">25</data>
+      <data key="n_tokens">1113</data>
+      <data key="n_scored_steps">20</data>
+      <data key="n_last_line">  \draw (10.5,1) node {$\vec{o}_1$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s25_b1_n78">
+      <data key="n_label">[25:1]   \draw (10.5,1) node {$\vec{o}_1$};</data>
+      <data key="n_step">25</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7</data>
+      <data key="n_lines">25</data>
+      <data key="n_tokens">1113</data>
+      <data key="n_scored_steps">20</data>
+      <data key="n_last_line">  \draw (10.5,1) node {$\vec{o}_1$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s26_b0_n79">
+      <data key="n_label">[26:0]   \draw[very thick] (11,0.5) -- (11+0.5,…</data>
+      <data key="n_step">26</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.7028</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7028</data>
+      <data key="n_lines">26</data>
+      <data key="n_tokens">1154</data>
+      <data key="n_scored_steps">21</data>
+      <data key="n_last_line">  \draw[very thick] (11,0.5) -- (11+0.5,0.5+0.5);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s26_b1_n80">
+      <data key="n_label">[26:1]   \draw[very thick,-&gt;] (11.1,1) -- (11.4…</data>
+      <data key="n_step">26</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7028</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7028</data>
+      <data key="n_lines">26</data>
+      <data key="n_tokens">1137</data>
+      <data key="n_scored_steps">21</data>
+      <data key="n_last_line">  \draw[very thick,-&gt;] (11.1,1) -- (11.4,1);</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s26_b1_n81">
+      <data key="n_label">[26:1]   \draw (10.5,0.75) node {$\vec{o}_3$};</data>
+      <data key="n_step">26</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7028</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7028</data>
+      <data key="n_lines">26</data>
+      <data key="n_tokens">1134</data>
+      <data key="n_scored_steps">21</data>
+      <data key="n_last_line">  \draw (10.5,0.75) node {$\vec{o}_3$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s27_b2_n82">
+      <data key="n_label">[27:2]   \draw (10.5,1.25) node {$\vec{o}_2$};</data>
+      <data key="n_step">27</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.7709</data>
+      <data key="n_verifier">0.8</data>
+      <data key="n_cumulative">0.7709</data>
+      <data key="n_lines">27</data>
+      <data key="n_tokens">1155</data>
+      <data key="n_scored_steps">22</data>
+      <data key="n_last_line">  \draw (10.5,1.25) node {$\vec{o}_2$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s27_b0_n83">
+      <data key="n_label">[27:0]   \draw (10.5,1) node {$\hat{o}_1$};</data>
+      <data key="n_step">27</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.7009</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7009</data>
+      <data key="n_lines">27</data>
+      <data key="n_tokens">1173</data>
+      <data key="n_scored_steps">22</data>
+      <data key="n_last_line">  \draw (10.5,1) node {$\hat{o}_1$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s27_b1_n84">
+      <data key="n_label">[27:1]   \draw (11.2,1.2) node {\tiny{Pool}};</data>
+      <data key="n_step">27</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7009</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7009</data>
+      <data key="n_lines">27</data>
+      <data key="n_tokens">1155</data>
+      <data key="n_scored_steps">22</data>
+      <data key="n_last_line">  \draw (11.2,1.2) node {\tiny{Pool}};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s28_b0_n85">
+      <data key="n_label">[28:0] \end{tikzpicture}</data>
+      <data key="n_step">28</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.8963</data>
+      <data key="n_verifier">0.95</data>
+      <data key="n_cumulative">0.8963</data>
+      <data key="n_lines">28</data>
+      <data key="n_tokens">1162</data>
+      <data key="n_scored_steps">23</data>
+      <data key="n_last_line">\end{tikzpicture}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s28_b1_n86">
+      <data key="n_label">[28:1]   \draw (10.5,1.5) node {$\hat{o}_2$};</data>
+      <data key="n_step">28</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7703</data>
+      <data key="n_verifier">0.8</data>
+      <data key="n_cumulative">0.7703</data>
+      <data key="n_lines">28</data>
+      <data key="n_tokens">1194</data>
+      <data key="n_scored_steps">23</data>
+      <data key="n_last_line">  \draw (10.5,1.5) node {$\hat{o}_2$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s28_b1_n87">
+      <data key="n_label">[28:1]   \draw (10.5,0.75) node {$\hat{o}_2$};</data>
+      <data key="n_step">28</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7703</data>
+      <data key="n_verifier">0.8</data>
+      <data key="n_cumulative">0.7703</data>
+      <data key="n_lines">28</data>
+      <data key="n_tokens">1194</data>
+      <data key="n_scored_steps">23</data>
+      <data key="n_last_line">  \draw (10.5,0.75) node {$\hat{o}_2$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s29_b0_n88">
+      <data key="n_label">[29:0] \end{document}</data>
+      <data key="n_step">29</data>
+      <data key="n_beam">0</data>
+      <data key="n_score">0.8963</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.8963</data>
+      <data key="n_lines">29</data>
+      <data key="n_tokens">1168</data>
+      <data key="n_scored_steps">23</data>
+      <data key="n_last_line">\end{document}</data>
+      <data key="n_finished">true</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s29_b1_n89">
+      <data key="n_label">[29:1]   \draw (10.5,0.5) node {$\hat{o}_3$};</data>
+      <data key="n_step">29</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.7911</data>
+      <data key="n_verifier">0.8</data>
+      <data key="n_cumulative">0.7911</data>
+      <data key="n_lines">29</data>
+      <data key="n_tokens">1215</data>
+      <data key="n_scored_steps">24</data>
+      <data key="n_last_line">  \draw (10.5,0.5) node {$\hat{o}_3$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s29_b2_n90">
+      <data key="n_label">[29:2]   \draw (10.5,1.25) node {$\hat{o}_1$};</data>
+      <data key="n_step">29</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.7211</data>
+      <data key="n_verifier">0.7</data>
+      <data key="n_cumulative">0.7211</data>
+      <data key="n_lines">29</data>
+      <data key="n_tokens">1215</data>
+      <data key="n_scored_steps">24</data>
+      <data key="n_last_line">  \draw (10.5,1.25) node {$\hat{o}_1$};</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">3</data>
+    </node>
+    <node id="s30_b1_n91">
+      <data key="n_label">[30:1] \end{tikzpicture}</data>
+      <data key="n_step">30</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.8963</data>
+      <data key="n_verifier">0.85</data>
+      <data key="n_cumulative">0.7907</data>
+      <data key="n_lines">29</data>
+      <data key="n_tokens">1168</data>
+      <data key="n_scored_steps">25</data>
+      <data key="n_last_line">\end{tikzpicture}</data>
+      <data key="n_finished">true</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s30_b2_n92">
+      <data key="n_label">[30:2] \end{tikzpicture}</data>
+      <data key="n_step">30</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.7907</data>
+      <data key="n_verifier">0.85</data>
+      <data key="n_cumulative">0.7708</data>
+      <data key="n_lines">30</data>
+      <data key="n_tokens">1222</data>
+      <data key="n_scored_steps">25</data>
+      <data key="n_last_line">\end{tikzpicture}</data>
+      <data key="n_finished">false</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <node id="s31_b1_n93">
+      <data key="n_label">[31:1] \end{document}</data>
+      <data key="n_step">31</data>
+      <data key="n_beam">1</data>
+      <data key="n_score">0.8963</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.7512</data>
+      <data key="n_lines">29</data>
+      <data key="n_tokens">1168</data>
+      <data key="n_scored_steps">25</data>
+      <data key="n_last_line">\end{document}</data>
+      <data key="n_finished">true</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">1</data>
+    </node>
+    <node id="s31_b2_n94">
+      <data key="n_label">[31:2] \end{document}</data>
+      <data key="n_step">31</data>
+      <data key="n_beam">2</data>
+      <data key="n_score">0.7512</data>
+      <data key="n_verifier">0.5</data>
+      <data key="n_cumulative">0.7322</data>
+      <data key="n_lines">31</data>
+      <data key="n_tokens">1228</data>
+      <data key="n_scored_steps">25</data>
+      <data key="n_last_line">\end{document}</data>
+      <data key="n_finished">true</data>
+      <data key="n_selected">true</data>
+      <data key="n_rank">2</data>
+    </node>
+    <edge id="e_s0_b0_n1_s1_b0_n2" source="s0_b0_n1" target="s1_b0_n2">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s1_b0_n2_s1_b0_n3" source="s1_b0_n2" target="s1_b0_n3">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s1_b0_n3_s1_b0_n4" source="s1_b0_n3" target="s1_b0_n4">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s1_b0_n4_s2_b0_n7" source="s1_b0_n4" target="s2_b0_n7">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s2_b0_n7_s2_b0_n8" source="s2_b0_n7" target="s2_b0_n8">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s1_b1_n5_s2_b1_n9" source="s1_b1_n5" target="s2_b1_n9">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s2_b0_n8_s3_b0_n10" source="s2_b0_n8" target="s3_b0_n10">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s2_b1_n9_s3_b1_n11" source="s2_b1_n9" target="s3_b1_n11">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s1_b2_n6_s3_b2_n12" source="s1_b2_n6" target="s3_b2_n12">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s3_b0_n10_s4_b0_n13" source="s3_b0_n10" target="s4_b0_n13">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s3_b1_n11_s4_b1_n14" source="s3_b1_n11" target="s4_b1_n14">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s3_b2_n12_s4_b2_n15" source="s3_b2_n12" target="s4_b2_n15">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s4_b0_n13_s5_b0_n16" source="s4_b0_n13" target="s5_b0_n16">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s4_b1_n14_s5_b1_n17" source="s4_b1_n14" target="s5_b1_n17">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s5_b1_n17_s5_b1_n18" source="s5_b1_n17" target="s5_b1_n18">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s5_b0_n16_s6_b0_n19" source="s5_b0_n16" target="s6_b0_n19">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s6_b0_n19_s6_b0_n20" source="s6_b0_n19" target="s6_b0_n20">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s6_b0_n20_s6_b0_n21" source="s6_b0_n20" target="s6_b0_n21">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s4_b2_n15_s7_b2_n22" source="s4_b2_n15" target="s7_b2_n22">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s7_b2_n22_s7_b2_n23" source="s7_b2_n22" target="s7_b2_n23">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s6_b0_n21_s7_b0_n24" source="s6_b0_n21" target="s7_b0_n24">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s7_b0_n24_s8_b0_n25" source="s7_b0_n24" target="s8_b0_n25">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s8_b0_n25_s8_b0_n26" source="s8_b0_n25" target="s8_b0_n26">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s8_b0_n26_s8_b0_n27" source="s8_b0_n26" target="s8_b0_n27">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s8_b0_n27_s9_b0_n28" source="s8_b0_n27" target="s9_b0_n28">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s9_b0_n28_s9_b0_n29" source="s9_b0_n28" target="s9_b0_n29">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s9_b0_n29_s9_b0_n30" source="s9_b0_n29" target="s9_b0_n30">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s9_b0_n30_s10_b0_n31" source="s9_b0_n30" target="s10_b0_n31">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s10_b0_n31_s10_b0_n32" source="s10_b0_n31" target="s10_b0_n32">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s10_b0_n32_s10_b0_n33" source="s10_b0_n32" target="s10_b0_n33">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s5_b1_n18_s11_b1_n34" source="s5_b1_n18" target="s11_b1_n34">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s10_b0_n33_s11_b0_n35" source="s10_b0_n33" target="s11_b0_n35">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s7_b2_n23_s11_b2_n36" source="s7_b2_n23" target="s11_b2_n36">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s11_b0_n35_s12_b0_n37" source="s11_b0_n35" target="s12_b0_n37">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s11_b1_n34_s12_b1_n38" source="s11_b1_n34" target="s12_b1_n38">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s11_b2_n36_s12_b2_n39" source="s11_b2_n36" target="s12_b2_n39">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s12_b0_n37_s13_b0_n40" source="s12_b0_n37" target="s13_b0_n40">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s13_b0_n40_s13_b0_n41" source="s13_b0_n40" target="s13_b0_n41">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s12_b1_n38_s13_b1_n42" source="s12_b1_n38" target="s13_b1_n42">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s13_b0_n41_s14_b0_n43" source="s13_b0_n41" target="s14_b0_n43">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s13_b1_n42_s14_b1_n44" source="s13_b1_n42" target="s14_b1_n44">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s12_b2_n39_s14_b2_n45" source="s12_b2_n39" target="s14_b2_n45">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s14_b0_n43_s15_b0_n46" source="s14_b0_n43" target="s15_b0_n46">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s14_b2_n45_s15_b2_n47" source="s14_b2_n45" target="s15_b2_n47">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s14_b1_n44_s15_b1_n48" source="s14_b1_n44" target="s15_b1_n48">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s15_b0_n46_s16_b0_n49" source="s15_b0_n46" target="s16_b0_n49">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s15_b1_n48_s16_b1_n50" source="s15_b1_n48" target="s16_b1_n50">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s15_b2_n47_s16_b2_n51" source="s15_b2_n47" target="s16_b2_n51">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s16_b0_n49_s17_b0_n52" source="s16_b0_n49" target="s17_b0_n52">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s16_b1_n50_s17_b1_n53" source="s16_b1_n50" target="s17_b1_n53">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s16_b2_n51_s17_b2_n54" source="s16_b2_n51" target="s17_b2_n54">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s17_b1_n53_s18_b1_n55" source="s17_b1_n53" target="s18_b1_n55">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s17_b2_n54_s18_b2_n56" source="s17_b2_n54" target="s18_b2_n56">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s17_b0_n52_s18_b0_n57" source="s17_b0_n52" target="s18_b0_n57">
+      <data key="e_label">0.60</data>
+      <data key="e_verifier">0.6</data>
+    </edge>
+    <edge id="e_s18_b0_n57_s19_b0_n58" source="s18_b0_n57" target="s19_b0_n58">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s18_b1_n55_s19_b1_n59" source="s18_b1_n55" target="s19_b1_n59">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s18_b2_n56_s19_b2_n60" source="s18_b2_n56" target="s19_b2_n60">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s19_b0_n58_s20_b0_n61" source="s19_b0_n58" target="s20_b0_n61">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s19_b1_n59_s20_b1_n62" source="s19_b1_n59" target="s20_b1_n62">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s19_b2_n60_s20_b2_n63" source="s19_b2_n60" target="s20_b2_n63">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s20_b0_n61_s21_b0_n64" source="s20_b0_n61" target="s21_b0_n64">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s21_b0_n64_s21_b0_n65" source="s21_b0_n64" target="s21_b0_n65">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s20_b1_n62_s21_b1_n66" source="s20_b1_n62" target="s21_b1_n66">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s21_b0_n65_s22_b0_n67" source="s21_b0_n65" target="s22_b0_n67">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s21_b1_n66_s22_b1_n68" source="s21_b1_n66" target="s22_b1_n68">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s20_b2_n63_s22_b2_n69" source="s20_b2_n63" target="s22_b2_n69">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s22_b1_n68_s23_b1_n70" source="s22_b1_n68" target="s23_b1_n70">
+      <data key="e_label">0.85</data>
+      <data key="e_verifier">0.85</data>
+    </edge>
+    <edge id="e_s22_b0_n67_s23_b0_n71" source="s22_b0_n67" target="s23_b0_n71">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s23_b0_n71_s23_b0_n72" source="s23_b0_n71" target="s23_b0_n72">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s23_b0_n72_s24_b0_n73" source="s23_b0_n72" target="s24_b0_n73">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s23_b1_n70_s24_b1_n74" source="s23_b1_n70" target="s24_b1_n74">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s22_b2_n69_s24_b2_n75" source="s22_b2_n69" target="s24_b2_n75">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s24_b0_n73_s25_b0_n76" source="s24_b0_n73" target="s25_b0_n76">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s25_b0_n76_s25_b0_n77" source="s25_b0_n76" target="s25_b0_n77">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s24_b1_n74_s25_b1_n78" source="s24_b1_n74" target="s25_b1_n78">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s25_b0_n77_s26_b0_n79" source="s25_b0_n77" target="s26_b0_n79">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s25_b1_n78_s26_b1_n80" source="s25_b1_n78" target="s26_b1_n80">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s26_b1_n80_s26_b1_n81" source="s26_b1_n80" target="s26_b1_n81">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s24_b2_n75_s27_b2_n82" source="s24_b2_n75" target="s27_b2_n82">
+      <data key="e_label">0.80</data>
+      <data key="e_verifier">0.8</data>
+    </edge>
+    <edge id="e_s26_b0_n79_s27_b0_n83" source="s26_b0_n79" target="s27_b0_n83">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s26_b1_n81_s27_b1_n84" source="s26_b1_n81" target="s27_b1_n84">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s27_b0_n83_s28_b0_n85" source="s27_b0_n83" target="s28_b0_n85">
+      <data key="e_label">0.95</data>
+      <data key="e_verifier">0.95</data>
+    </edge>
+    <edge id="e_s27_b1_n84_s28_b1_n86" source="s27_b1_n84" target="s28_b1_n86">
+      <data key="e_label">0.80</data>
+      <data key="e_verifier">0.8</data>
+    </edge>
+    <edge id="e_s28_b1_n86_s28_b1_n87" source="s28_b1_n86" target="s28_b1_n87">
+      <data key="e_label">0.80</data>
+      <data key="e_verifier">0.8</data>
+    </edge>
+    <edge id="e_s28_b0_n85_s29_b0_n88" source="s28_b0_n85" target="s29_b0_n88">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s28_b1_n87_s29_b1_n89" source="s28_b1_n87" target="s29_b1_n89">
+      <data key="e_label">0.80</data>
+      <data key="e_verifier">0.8</data>
+    </edge>
+    <edge id="e_s27_b2_n82_s29_b2_n90" source="s27_b2_n82" target="s29_b2_n90">
+      <data key="e_label">0.70</data>
+      <data key="e_verifier">0.7</data>
+    </edge>
+    <edge id="e_s29_b1_n89_s30_b1_n91" source="s29_b1_n89" target="s30_b1_n91">
+      <data key="e_label">0.85</data>
+      <data key="e_verifier">0.85</data>
+    </edge>
+    <edge id="e_s29_b2_n90_s30_b2_n92" source="s29_b2_n90" target="s30_b2_n92">
+      <data key="e_label">0.85</data>
+      <data key="e_verifier">0.85</data>
+    </edge>
+    <edge id="e_s30_b1_n91_s31_b1_n93" source="s30_b1_n91" target="s31_b1_n93">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+    <edge id="e_s30_b2_n92_s31_b2_n94" source="s30_b2_n92" target="s31_b2_n94">
+      <data key="e_label">0.50</data>
+      <data key="e_verifier">0.5</data>
+    </edge>
+  </graph>
+</graphml>
