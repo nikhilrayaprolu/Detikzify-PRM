@@ -10,6 +10,7 @@ from typing import Any, Dict, Generator, List, Literal, Optional, Set, Tuple, Un
 
 from PIL import Image
 import torch
+from tqdm import tqdm
 from torchmetrics import Metric
 from transformers import StoppingCriteriaList
 from transformers.generation.streamers import BaseStreamer
@@ -171,6 +172,7 @@ class DetikzifyGenerator:
         self.gen_kwargs = gen_kwargs
 
         self.solution = deque(maxlen=1)
+        self.rollout_count = 0
         self.failed_rollouts = dict()
         self.norm = DynMinMaxNorm()
         self.control = control or ExplicitAbort()
@@ -258,6 +260,7 @@ class DetikzifyGenerator:
             )
 
             try:
+                tqdm.write(f"[MCTS] Starting rollout {self.rollout_count + 1}...")
                 prev_ids, line = input_ids, list()
                 for token in streamer:
                     line.append(token)
@@ -341,6 +344,17 @@ class DetikzifyGenerator:
 
         node.update_win_value(self.norm(score) if scorable and self.metric else score)
         self.solution.append((score, tikz))
+        self.rollout_count += 1
+
+        status = "Success" if scorable else "Failed"
+        error_msg = ""
+        if not scorable and tikz.errors:
+            first_err_line = min(tikz.errors.keys())
+            error_msg = f" (Error at line {first_err_line}: {tikz.errors[first_err_line]})"
+        
+        tqdm.write(
+            f"[MCTS] Rollout {self.rollout_count} finished: {status}, score={score:.4f}{error_msg}"
+        )
 
     def merge(self, node: WideNode, nodes_to_merge: List[WideNode]) -> Tuple[WideNode, List[WideNode]]:
         for merge_node in nodes_to_merge:
