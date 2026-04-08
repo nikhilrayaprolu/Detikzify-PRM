@@ -1,3 +1,23 @@
+# Executing the PRM module
+
+### 1. Inference (Running the Model)
+These are the commands used to generate TikZ code from images using the `detikzify` model with various verifier settings.
+*   **Basic Inference:**
+    `python examples/infer.py --model_name_or_path nllg/detikzify-v2.5-8b --image input.png --mode simulate --expansions 1 --save-image best.png`
+*   **Inference with Finetuned Verifier:**
+    `python examples/infer.py --model_name_or_path nllg/detikzify-v2.5-8b --image image.jpg --mode simulate --expansions 1 --save-image best1.png --verifier_type finetuned --verifier_checkpoint qwen3vl-prm-finetuned/checkpoint-best`
+
+### 2. Evaluation
+These commands use `torchrun` to run distributed evaluation on test datasets.
+*   **Full Evaluation:**
+    `torchrun --nproc_per_node 1 examples/eval.py --testset ./datikz-test.parquet --output results.json --path detikzify-v2.5-8b=nllg/detikzify-v2.5-8b --verifier_type finetuned --verifier_checkpoint qwen3vl-prm-finetuned/checkpoint-best`
+
+### 3. Data Generation & Analysis
+Commands used to prepare the datasets and analyze the PRM (Process Reward Model) data.
+*   **Generation:** `python data_generation.py`
+*   `python finetune.py` (Lines 280–289)
+
+
 # DeTi*k*Zify<br><sub><sup>Synthesizing Graphics Programs for Scientific Figures and Sketches with Ti*k*Z</sup></sub>
 [![OpenReview](https://img.shields.io/badge/View%20on%20OpenReview-8C1B13?labelColor=gray&logo=data:image/png;base64,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)](https://openreview.net/forum?id=bcVLFQCOjc)
 [![arXiv](https://img.shields.io/badge/View%20on%20arXiv-B31B1B?logo=arxiv&labelColor=gray)](https://arxiv.org/abs/2405.15306)
